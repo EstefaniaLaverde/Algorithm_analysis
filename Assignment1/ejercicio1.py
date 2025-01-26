@@ -89,7 +89,7 @@ if __name__=='__main__':
     G=graph(nodes,edges)
 
     k=6
-    print((not G.diameter_greater_than(k)) and G.is_connected())
+    print(G.is_connected() and (not G.diameter_greater_than(k)))
 
 
 
