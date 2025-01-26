@@ -1,5 +1,6 @@
 from typing import Optional
 from random import choice
+import sys
 
 class Queue():
     def __init__(self) -> None:
@@ -136,3 +137,20 @@ class Graph():
         nx.draw(G, with_labels=True, font_weight='bold')
         plt.show()
     
+
+if __name__=='__main__':
+    input_path=sys.argv[1]
+
+    #leer grafo desde un archivo txt con el formato especificado
+    with open(sys.argv[1]) as f:
+        nodes=list(map(int,f.readline().split()))
+        m=int(f.readline())
+
+        edges=[]
+        for i in range(m):
+            a,b=map(int,f.readline().split())
+            edges.append([a,b])
+
+    G=Graph(nodes,edges)
+
+    print(G.check_6degrees2())
