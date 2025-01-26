@@ -1,32 +1,32 @@
-# Tarea 1 Analisis de algoritmos
+# Tarea 1 Análisis de algoritmos
 
 ## Ejercicio 1
 
-### Modelacion
+### Modelación
 
-Modelamos la situacion usando un grafo, donde los vertices representan a las personas y hay una eje entre dos vertices si y solo si las 2 personas respectivas se conocen directamente entre si, no permitimos multiples ejes ni self loops, los ejes son no dirigidos y no tienen costos.
+Modelamos la situación utilizando un grafo, donde los vértices representan a las personas y hay una arista entre dos vértices si y solo si las 2 personas respectivas se conocen directamente entre sí, no permitimos múltiples aristas ni self loops, las aristas son no dirigidas y no tienen costos.
 
-una vez definido el grafo donde vamos a trabajar, podemos empezar a resolver el problema, como nos dice el enunciado debemos verificar que cada persona conozca a cualquier otra persona atraves de una cadena de a lo sumo 6 personas, es decir la distancia entre cualquier par de nodos debe der menor o igual a 6, en otras palabras debemos verificar que el diametro del grafo sea menor a 6.
+Una vez definido el grafo donde vamos a trabajar, podemos empezar a resolver el problema, como nos dice el enunciado debemos verificar que cada persona conozca a cualquier otra persona a través de una cadena de a lo sumo 6 personas, es decir la distancia entre cualquier par de nodos debe ser menor o igual a 6, en otras palabras debemos verificar que el diámetro del grafo sea menor o igual a 6.
 
-La idea general de la implenetacion es usar busqueda en anchura (bsf por su acronimo en ingles), para confirmar que entre cualquier par de nodos la distancia es menor o igual a  6, vamos iterando sobre los nodos del grafo seleccionando uno de ellos como raiz y usamos bsf para verificar que todos los nodos estan a distancia menor o igual a 6 del nodo selecionado como raiz, si alguno supera este umbral de distancia retornamos false, este proceso al iterar por cada nodo raiz, nos permite evaluar todas las distancias entre parejas de nodos.
+La idea general de la implementación es utilizar búsqueda en anchura (BFS por su acrónimo en inglés), para confirmar que entre cualquier par de nodos la distancia es menor o igual a 6, vamos iterando sobre los nodos del grafo seleccionando uno de ellos como raíz y utilizamos BFS para verificar que todos los nodos están a distancia menor o igual a 6 del nodo seleccionado como raíz, si alguno supera este umbral de distancia retornamos False, este proceso al iterar por cada nodo raíz, nos permite evaluar todas las distancias entre pares de nodos.
 
-### Hipotesis asumidas
+### Hipótesis asumidas
 
-el enunciado nos habla de verificar la teoria de los 6 grafos de separacion en una red social como Facebook, basado en esto asumimos las siguientes hipotesis
+El enunciado nos habla de verificar la teoría de los 6 grados de separación en una red social como Facebook, basado en esto asumimos las siguientes hipótesis:
 
-- dado que el grafo tiene millones de nodos, para poder considerar que el grafo es denso (no sparse) entonces seria nesesario que el usuario promedio tubiera cientos de miles de amigos, se sabe en general la cantidad promedio de amigos es alrededor de los cientos, asi una fraccion muy pequeña del tamaño del grafo, por tanto vamos a asumir que los grafos son sparse
+- Dado que el grafo tiene millones de nodos, para poder considerar que el grafo es denso (no sparse) entonces sería necesario que el usuario promedio tuviera cientos de miles de amigos, se sabe en general que la cantidad promedio de amigos es alrededor de los cientos, así una fracción muy pequeña del tamaño del grafo, por tanto vamos a asumir que los grafos son sparse.
 
-- el algoritmo debe funcionar para grafos con millones de nodos, asi que al implementar no podemos depender de la matriz de adyacencia para representar el grafo, pues si n es la cantidad de nodos, la matriz de adyancencia tiene n^2 elementos, teniendo en cuanta la hipotesis de que el grafo es sparse, ademas de ser una cantidad inacesible de memoria tambien seria un cantidad enorme de memoria desperdiciada.
+- El algoritmo debe funcionar para grafos con millones de nodos, así que al implementar no podemos depender de la matriz de adyacencia para representar el grafo, pues si n es la cantidad de nodos, la matriz de adyacencia tiene n^2 elementos, teniendo en cuenta la hipótesis de que el grafo es sparse, además de ser una cantidad inaccesible de memoria también sería una cantidad enorme de memoria desperdiciada.
 
-### Representacion de la entrada
+### Representación de la entrada
 
-para representar una base de datos de relaciones de amistad usamos un archivo de txt que sigo las siguientes especificaciones:
+Para representar una base de datos de relaciones de amistad utilizamos un archivo de texto que sigue las siguientes especificaciones:
 
-- en la primera linea hay enteros separados por espacio representando los nodos (personas) del grafo.
-- en la segunda linea hay un entero indicando la cantidad de ejes en el grafo, digamos m
-- en las m lineas posterioes hay dos enteros que deben coincidir con los nodos del grafos y estos dos enteros indican que hay un eje entre esos dos nodos
+- En la primera línea hay enteros separados por espacio representando los nodos (personas) del grafo.
+- En la segunda línea hay un entero indicando la cantidad de aristas en el grafo, digamos m.
+- En las m líneas posteriores hay dos enteros que deben coincidir con los nodos del grafo y estos dos enteros indican que hay una arista entre esos dos nodos.
 
-ejemplo, para un grafo que es un ciclo de 4 elementos el archivo txt luciria asi
+Ejemplo, para un grafo que es un ciclo de 4 elementos, el archivo de texto luciría así:
 
 ```text
 1 2 3 4
@@ -37,114 +37,114 @@ ejemplo, para un grafo que es un ciclo de 4 elementos el archivo txt luciria asi
 4 1
 ```
 
-es posible encontrar mas archivos de ejemplo en la carpeta tests_eje1
+Es posible encontrar más archivos de ejemplo en la carpeta tests_eje1.
 
 ### Modo de uso
 
-una vez se tiene el archivo txt con el formato definido, es suficiente con ejecutar el comando:
+Una vez que se tiene el archivo de texto con el formato definido, es suficiente con ejecutar el comando:
 
 ```bash
 python .\Assignment1\breadth_first_search.py path_to_my_test_file.txt
 ```
 
-donde path_to_my_test_file.txt es el path al archivo txt con el grafo que queremos evaluar.
+Donde path_to_my_test_file.txt es el path al archivo de texto con el grafo que queremos evaluar.
 
-tras ejecutar este comando podremos ver en la consola True o False dependiendo de si el grafo cumple o no con la teoria de los 6 grados de separacion
+Tras ejecutar este comando podremos ver en la consola True o False dependiendo de si el grafo cumple o no con la teoría de los 6 grados de separación.
 
 ### Testeo
 
-para propositos de testeo pusimos varios archivos txt con descripciones de grafos en la carpeta tests_eje1, varios de estos fueron escritos a mano con el proposito de evaluar grafos con estructuras particuales, por ejemplo caminos, ciclos, grafos no conexos, etc.
+Para propósitos de testeo pusimos varios archivos de texto con descripciones de grafos en la carpeta tests_eje1, varios de estos fueron escritos a mano con el propósito de evaluar grafos con estructuras particulares, por ejemplo caminos, ciclos, grafos no conexos, etc.
 
-Adicionalmente en Assignment1\generate_test1.py, tenemos un script para generar grafos de forma aleatoria para poder testear aun mas el algoritmo, podemos generar un archivo txt con un grafo aleatorio ejecutando el commando:
+Adicionalmente, en Assignment1\generate_test1.py, tenemos un script para generar grafos de forma aleatoria para poder testear aún más el algoritmo, podemos generar un archivo de texto con un grafo aleatorio ejecutando el comando:
 
 ```bash
 python Assignment1\generate_test1.py path_to_my_test_file.txt n m
 ```
 
-donde path_to_my_test_file.txt es el path donde queremos que quede guardado el grafo recien generado, n la cantidad de nodos del grafo a generar y m la cantidad de ejes.
+Donde path_to_my_test_file.txt es el path donde queremos que quede guardado el grafo recién generado, n la cantidad de nodos del grafo a generar y m la cantidad de aristas.
 
-### Visualizacion
+### Visualización
 
-Para asistir en el testeo hemos agregado un script de vizualizacion, para asi poder graficar y verificar correctitud de los resultados manualmente de forma facil, para hacer esto es suficiente con ejecutar el comando
+Para asistir en el testeo hemos agregado un script de visualización, para así poder graficar y verificar la corrección de los resultados manualmente de forma fácil, para hacer esto es suficiente con ejecutar el comando:
 
 ```bash
 python .\Assignment1\plot_graph.py path_to_my_test_file.txt
 ```
 
-donde path_to_my_test_file.txt es el path un archivo txt con el grafo que queremos visualizar
+Donde path_to_my_test_file.txt es el path a un archivo de texto con el grafo que queremos visualizar.
 
-### Solucion alternativa
+### Solución alternativa
 
-Deacuerdo a una propuesta que surgio en clase tambien tenemos una solucion alternativa para el ejercicio 1 usando multiplicacion de matrices, para solucionar el ejercicio 1 con esta solucion debemos usar el comando:
+De acuerdo a una propuesta que surgió en clase, también tenemos una solución alternativa para el ejercicio 1 utilizando multiplicación de matrices, para solucionar el ejercicio 1 con esta solución debemos usar el comando:
 
 ```bash
 python Assignment1\ejercicio1_matrix.py path_to_my_test_file.txt
 ```
 
-saldra en la consola True o False, la solucion al problema.
+Saldra en la consola True o False, la solución al problema.
 
-si bien una de los hipotesis que asumimos en el problema es que el grafo es sparse, la solucion alternativa es mas eficiente cuando se trata de grafos densos.
+Si bien una de las hipótesis que asumimos en el problema es que el grafo es sparse, la solución alternativa es más eficiente cuando se trata de grafos densos.
 
-La solucion con bsf esta hecha en python puro mientras que la solucion con matrices usa numpy, que por debajo esta en c con paralelizacion y rutinas muy optimizadas, lo cual hace que la comparacion no sea tan directa, sin embargo tenemos evidencia de que los tiempos de ejecucion de ambas soluciones varian enormente dependiendo la estructura del grafo y dependiendo de esto es mucho mejor tomar una solucion sobre la otra.
+La solución con BFS está hecha en Python puro, mientras que la solución con matrices utiliza numpy, que por debajo está en C con paralelización y rutinas muy optimizadas, lo cual hace que la comparación no sea tan directa, sin embargo, tenemos evidencia de que los tiempos de ejecución de ambas soluciones varían enormemente dependiendo de la estructura del grafo y dependiendo de esto es mucho mejor tomar una solución sobre la otra.
 
-- tests_eje1\test6.txt: es un grafo denso de 10000 nodos, tiempo con bsf 30 minutos, tiempo con matrices 52 segundos.
-- tests_eje1\test7.txt: es un grafo sparse con 10000 nodos, tiempo con bsf 0.2 segundos, tiempo con matrices 52 segundos.
+- tests_eje1\test6.txt: es un grafo denso de 10000 nodos, tiempo con BFS 30 minutos, tiempo con matrices 52 segundos.
+- tests_eje1\test7.txt: es un grafo sparse con 10000 nodos, tiempo con BFS 0.2 segundos, tiempo con matrices 52 segundos.
 
-Concluyendo que dependiento de la cantidad de ejes aveces es mucho mejor la solucion por multiplicacion de matrices mientras que aveces es mucho mejor la solucion por bsf, el algoritmo con matrices simpre va a requerir mas memoria pero va a ir mejorando a medida que se inventan nuevas formas de multiplicar matrices.
+Concluyendo que dependiendo de la cantidad de aristas, a veces es mucho mejor la solución por multiplicación de matrices, mientras que a veces es mucho mejor la solución por BFS, el algoritmo con matrices siempre va a requerir más memoria, pero va a ir mejorando a medida que se inventan nuevas formas de multiplicar matrices.
 
 ## Ejercicio 5
 
-### Modelacion
+### Modelación
 
-Modelamos el problema usando un grafo donde nos vertices son las intersecciones entre vias y los ejes son las vias, el enunciado nos dice que cada via tiene un costo asociado para convertirla en doble via, el cual es el costo del respectivo eje.
+Modelamos el problema utilizando un grafo donde los vértices son las intersecciones entre vías y las aristas son las vías, el enunciado nos dice que cada vía tiene un costo asociado para convertirla en doble vía, el cual es el costo de la arista respectiva.
 
-El problema nos pide encontrar un conjunto de vias que al convertirlas en doble via permitan ir de cualquier punto de la ciudad a cualquier otro usuando unicamente doble vias y que ademas esto tenga el costo minimo, es decir seleccionar un conjunto de ejes de costo minimo que de como resultado un grafo conexo.
+El problema nos pide encontrar un conjunto de vías que, al convertirlas en doble vía, permitan ir de cualquier punto de la ciudad a cualquier otro utilizando únicamente doble vías y que, además, esto tenga el costo mínimo, es decir, seleccionar un conjunto de aristas con costo mínimo que de como resultado un grafo conexo.
 
-Bajo este planteamiento, vamos a implementar el algoritmo de Kruskal para arboles de expansion de costo minimo (msp minimum spanning tree por sus siglas en ingles).
+Bajo este planteamiento, vamos a implementar el algoritmo de Kruskal para árboles de expansión de costo mínimo (MST por sus siglas en inglés).
 
-### Hipotesis asumidas
+### Hipótesis asumidas
 
-- Se asume el grafo tiene miles de nodos y es sparse, pues con una aproximacion sencilla una ciudad en cuadricula con 100 calles y 100 carreras tendra tendra 10000 intersecciones(nodos) y a lo sumo 4 vias por interseccion (ejes) por cada interseccion, claro hay ciudades mucho mas grandes y con presencia de puentes y/o tuneles, pero en general asumimos un grafo sparse con miles de nodos.
+- Se asume que el grafo tiene miles de nodos y es sparse, pues con una aproximación sencilla, una ciudad en cuadrícula con 100 calles y 100 carreras tendrá 10000 intersecciones (nodos) y, a lo sumo, 4 vías por intersección (aristas) por cada intersección, claro hay ciudades mucho más grandes y con presencia de puentes y/o túneles, pero en general asumimos un grafo sparse con miles de nodos.
 
-- Se asume que doble via da lugar a ejes bidireccionales o no dirigidos, si bien es posible asumir en un principio que los ejes son dirigidos, construir una solucion al problema que preserve direccionalidad (es decir que las doble vias tambien son dirigidas), se convierte en el problema de Minimum Strong Spanning Subdigraphs (MSSS), el cual es un problema NP-hard (Digraphs: Theory, algorithms and applications,  Prof. Jørgen Bang-Jensen, Prof. Gregory Z. Gutin (auth.), pag 483, primera frase de la seccion 12.2) y por tanto no se dispone de algoritmo eficiente para solucionar el problema para grafos con miles de nodos.
+- Se asume que doble vía da lugar a aristas bidireccionales o no dirigidas, si bien es posible asumir en un principio que las aristas son dirigidas, construir una solución al problema que preserve direccionalidad (es decir que las doble vías también son dirigidas), se convierte en el problema de Minimum Strong Spanning Subdigraphs (MSSS), el cual es un problema NP-hard (Digraphs: Theory, algorithms and applications,  Prof. Jørgen Bang-Jensen, Prof. Gregory Z. Gutin (auth.), pag 483, primera frase de la seccion 12.2) y por tanto no se dispone de algoritmo eficiente para solucionar el problema para grafos con miles de nodos.
 
-### Representacion de la entrada
+### Representación de la entrada
 
-para representar al grafo con el que modelamos la ciudad usamos un archivo txt con las siguientes especificaciones:
+Para representar el grafo con el que modelamos la ciudad utilizamos un archivo de texto con las siguientes especificaciones:
 
-- en la primera linea hay enteros separados por espacio representando los nodos (intersecciones de la ciudad) del grafo.
-- en la segunda linea hay un entero indicando la cantidad de ejes en el grafo, digamos m
-- en las m lineas posteriores hay 3 enteros que describen los ejes del grafo, donde `a b c` quiere decir que un eje entre el nodo `a` y `b` con costo `c`
+- En la primera línea hay enteros separados por espacio representando los nodos (intersecciones de la ciudad) del grafo.
+- En la segunda línea hay un entero indicando la cantidad de aristas en el grafo, digamos `m`.
+- En las `m` líneas posteriores hay 3 enteros que describen las aristas del grafo, donde `a b c` quiere decir que una hay arista entre el nodo `a` y `b` con costo `c`.
 
-ejemplo, para un grafo que es un ciclo de 4 elementos  el archivo txt luciria asi
+Ejemplo, para un grafo que es un ciclo de 4 elementos con costos consecutivos, el archivo de texto luciría así:
 
 ```text
 1 2 3 4
 4
-1 2
-2 3
-3 4
-4 1
+1 2 1
+2 3 2
+3 4 3
+4 1 4
 ```
 
-es posible encontrar archivos de ejemplo en la carpeta tests_eje5
+Es posible encontrar más archivos de ejemplo en la carpeta tests_eje5.
 
 ### Modo de uso
 
-una vez se tiene el archivo txt con el formato definido, es suficiente con ejecutar el comando:
+Una vez que se tiene el archivo de texto con el formato definido, es suficiente con ejecutar el comando:
 
 ```bash
-python Assignment1\pruebas_mst.ipynb path_to_my_test_file.txt
+python Assignment1\minimum_spanning_tree.py path_to_my_test_file.txt
 ```
 
-donde path_to_my_test_file.txt es el path al archivo txt con el grafo que queremos evaluar.
+Donde path_to_my_test_file.txt es el path al archivo de texto con el grafo que queremos evaluar.
 
-tras ejecutar este comando podremos ver en la consola como se imprimen los ejes que se deben convertir en doble via para cumplir con los requisitos del ejercicio, los resultados salen en el siguiente formato.
+Tras ejecutar este comando podremos ver en la consola cómo se imprimen las aristas que se deben convertir en doble vía para cumplir con los requisitos del ejercicio, los resultados salen en el siguiente formato.
 
-- en la primera linea un entero `m` dictando la cantidad de ejes
-- en las `m` lineas posteriores 3 enteros `a b c` dictando que debemos usar el eje que conecta a `a` con `b` y que tiene costo `c`.
+- En la primera línea un entero `m` dictando la cantidad de aristas.
+- En las `m` líneas posteriores 3 enteros `a b c` dictando que debemos usar la arista que conecta a `a` con `b` y que tiene costo `c`.
 
-ejemplo:
+Ejemplo:
 
 ```text
 3
@@ -155,21 +155,20 @@ ejemplo:
 
 ### Testeo
 
-al igual que en el ejercicio anterior hemos escrito archivos txt con grafos de diversas estructuras para probar el algoritmo, se puede generar grafos aleatorios con peso usando el comando:
+Al igual que en el ejercicio anterior hemos escrito archivos de texto con grafos de diversas estructuras para probar el algoritmo, se puede generar grafos aleatorios con peso utilizando el comando:
 
 ```bash
 python Assignment1\generate_test5.py n m min_cost max_cost path_to_my_test_file.txt
 ```
 
-donde n es la cantidad de nodos en el grafo a generar, m la cantidad de ejes, min_cost y max_cost los costos minimos y maximos de los ejes y path_to_my_test_file.txt el path al archivo donde queremos guardar el grafo aleatorio generado
+Donde n es la cantidad de nodos en el grafo a generar, m la cantidad de aristas, min_cost y max_cost los costos mínimos y máximos de las aristas y path_to_my_test_file.txt el path al archivo donde queremos guardar el grafo aleatorio generado.
 
-### Visualizacion
+### Visualización
 
-Al igual que en ejercicio anterior agregamos un script de visualizacion, la diferencia importante es que con este script podemos visualziar grafos con peso
+Al igual que en el ejercicio anterior agregamos un script de visualización, la diferencia importante es que con este script podemos visualizar grafos con peso.
 
 ```bash
 python .\Assignment1\plot_weighted_graph.py path_to_my_test_file.txt
 ```
 
-donde path_to_my_test_file.txt es el path un archivo txt con el grafo que queremos visualizar.
-
+Donde path_to_my_test_file.txt es el path a un archivo de texto con el grafo que queremos visualizar.
