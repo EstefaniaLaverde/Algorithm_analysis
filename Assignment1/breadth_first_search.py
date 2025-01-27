@@ -140,37 +140,73 @@ class Graph():
 # Intento 3
 from queue import Queue
 
-def check_6degrees(friends: dict[int:list[int]]) -> bool:
-
+def check_exceeds6degrees(friends: dict[int:list[int]]) -> bool:
+    """
+    This function checks if any user in the social network exceeds 6 degrees of separation.
+    
+    Parameters:
+    friends (dict[int:list[int]]): A dictionary where each key is a user ID and the value is a list of their friends' IDs.
+    
+    Returns:
+    bool: True if any user exceeds 6 degrees of separation, False otherwise.
+    """
+    # Initialize a flag to track if any user exceeds 6 degrees of separation
     exceeds_6_levels = False
+    
+    # Get a list of all users in the social network
     users = list(friends.keys())
 
+    # Iterate over each user in the social network
     index = 0
     while index<len(users) and not exceeds_6_levels:
+        # Select the current user as the root user
         root_user = users[index]
+
+        # If the root user is disconnected (has no friends), return True
+        if friends[root_user] == []:
+            return True
+
+        # Initialize a set to keep track of visited users
         visited = set()
+        
+        # Initialize a queue for BFS traversal
         queue = Queue()
 
+        # Add the root user to the visited set and the queue
         visited.add(root_user)
         queue.put(root_user)
-        level = 0
+        
+        # Initialize the level (degree of separation) to 0
+        level = 0 
 
+        # Perform BFS traversal
         while not queue.empty():
+            # Dequeue a user
             selected = queue.get()
+            
+            # Keep a copy of the previous visited set to check if any new users were added
             prev_visited = visited.copy()
+            
+            # Iterate over the friends of the current user
             for friend in friends[selected]:
+                # If the friend has not been visited before, add them to the queue and the visited set
                 if friend not in visited:
                     queue.put(friend)
                     visited.add(friend)
                 
+            # If any new users were added to the visited set, increment the level
             if visited != prev_visited:
                 level += 1
         
+            # Check if the current level exceeds 6 degrees of separation
             exceeds_6_levels = level > 6
 
+        # Move on to the next user
         index += 1
 
+    # Return the result
     return exceeds_6_levels 
+
 
 if __name__=='__main__':
     input_path=sys.argv[1]
