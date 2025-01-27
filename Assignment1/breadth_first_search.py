@@ -137,6 +137,40 @@ class Graph():
         nx.draw(G, with_labels=True, font_weight='bold')
         plt.show()
     
+# Intento 3
+from queue import Queue
+
+def check_6degrees(friends: dict[int:list[int]]) -> bool:
+
+    exceeds_6_levels = False
+    users = list(friends.keys())
+
+    index = 0
+    while index<len(users) and not exceeds_6_levels:
+        root_user = users[index]
+        visited = set()
+        queue = Queue()
+
+        visited.add(root_user)
+        queue.put(root_user)
+        level = 0
+
+        while not queue.empty():
+            selected = queue.get()
+            prev_visited = visited.copy()
+            for friend in friends[selected]:
+                if friend not in visited:
+                    queue.put(friend)
+                    visited.add(friend)
+                
+            if visited != prev_visited:
+                level += 1
+        
+            exceeds_6_levels = level > 6
+
+        index += 1
+
+    return exceeds_6_levels 
 
 if __name__=='__main__':
     input_path=sys.argv[1]
