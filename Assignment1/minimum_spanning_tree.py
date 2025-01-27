@@ -1,4 +1,6 @@
 import sys
+import networkx as nx
+import matplotlib.pyplot as plt
 
 
 
@@ -6,12 +8,11 @@ class Graph():
     def __init__(self, nodes: list[int], edges: list[tuple[int, int, int]]) -> None:
         self.nodes = nodes
         self.edges = edges
+        self.node_to_index = {node: i for i, node in enumerate(nodes)}
+
 
     ## FUNCION DE GRAFICACION HECHA CON GPT
-    def draw_graph(self):
-        import networkx as nx
-        import matplotlib.pyplot as plt
-
+    def draw_graph(self) -> None:
         G = nx.Graph()
         G.add_nodes_from(self.nodes)
 
@@ -27,9 +28,7 @@ class Graph():
         plt.title("Graph Visualization")
         plt.show()
 
-    def draw_digraph(self):
-        import networkx as nx
-        import matplotlib.pyplot as plt
+    def draw_digraph(self) -> None:
 
         G = nx.DiGraph()
         G.add_nodes_from(self.nodes)
@@ -47,12 +46,12 @@ class Graph():
         plt.show()
 
 
-    def find(self, parent, x: int) -> int:
+    def find(self, parent: list[int], x: int) -> int:
         if parent[x] != x:
             parent[x] = self.find(parent, parent[x])
         return parent[x]
 
-    def union(self, parent, rank, x, y):
+    def union(self, parent: list[int], rank: list[int], x: int, y: int) -> None:
         if rank[x] < rank[y]:
             parent[x] = y
         elif rank[x] > rank[y]:
@@ -61,23 +60,20 @@ class Graph():
             parent[y] = x
             rank[x] += 1
 
-    def kruskal(self):
+    def kruskal(self) -> list[tuple[int, int, int]]:
 
         mst= []
 
-        parent = []
-        rank = []
+        parent = [i for i in range(len(self.nodes))]
+        rank = [0] * len(self.nodes)
 
         self.edges = sorted(self.edges,
                             key=lambda item: item[2])
 
-        for node in self.nodes:
-            parent.append(node)
-            rank.append(0)
 
         for u, v, w in self.edges:
-            x = self.find(parent, u)
-            y = self.find(parent, v)
+            x = self.find(parent, self.node_to_index[u]) 
+            y = self.find(parent, self.node_to_index[v])
 
             if x != y:
                 mst.append((u,v,w))
