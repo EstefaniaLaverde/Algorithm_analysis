@@ -100,13 +100,15 @@ Modelamos el problema utilizando un grafo donde los vértices son las intersecci
 
 El problema nos pide encontrar un conjunto de vías que, al convertirlas en doble vía, permitan ir de cualquier punto de la ciudad a cualquier otro utilizando únicamente doble vías y que, además, esto tenga el costo mínimo, es decir, seleccionar un conjunto de aristas con costo mínimo que de como resultado un grafo conexo.
 
-Bajo este planteamiento, vamos a implementar el algoritmo de Kruskal para árboles de expansión de costo mínimo (MST por sus siglas en inglés).
+Bajo este planteamiento, vamos a implementar el algoritmo de Kruskal para árboles de expansión de costo mínimo (MST por sus siglas en inglés), pues para un subgrafo conexo de costo minimo, nesesariamente no se le pueden quitar ejes sin volverlo disconexo, asi dicho grafo es un arbol.
 
 ### Hipótesis asumidas
 
 - Se asume que el grafo tiene miles de nodos y es sparse, pues con una aproximación sencilla, una ciudad en cuadrícula con 100 calles y 100 carreras tendrá 10000 intersecciones (nodos) y, a lo sumo, 4 vías por intersección (aristas) por cada intersección, claro hay ciudades mucho más grandes y con presencia de puentes y/o túneles, pero en general asumimos un grafo sparse con miles de nodos.
 
-- Se asume que doble vía da lugar a aristas bidireccionales o no dirigidas, si bien es posible asumir en un principio que las aristas son dirigidas, construir una solución al problema que preserve direccionalidad (es decir que las doble vías también son dirigidas), se convierte en el problema de Minimum Strong Spanning Subdigraphs (MSSS), el cual es un problema NP-hard (Digraphs: Theory, algorithms and applications,  Prof. Jørgen Bang-Jensen, Prof. Gregory Z. Gutin (auth.), pag 483, primera frase de la seccion 12.2) y por tanto no se dispone de algoritmo eficiente para solucionar el problema para grafos con miles de nodos.
+- Se asume que doble vía da lugar a aristas bidireccionales o no dirigidas, si bien es posible asumir en un principio que las aristas son dirigidas, construir una solución al problema que preserve direccionalidad (es decir que las doble vías también son dirigidas), se convierte en el problema de Minimum Strong Spanning Subdigraphs (MSSS), el cual es un problema NP-hard (Digraphs: Theory, algorithms and applications, 2nd edition, Prof. Jørgen Bang-Jensen, Prof. Gregory Z. Gutin (auth.), pag 483, primera frase de la seccion 12.2) y por tanto no se dispone de algoritmo eficiente para solucionar el problema para grafos con miles de nodos.
+
+- Se asume que el grafo es conexo, pues en una ciudad debe ser posible transitar desde cualquier punto hacia cualquier otro punto, en caso de aplicar Kruskal a un grano no conex, se obtiene el bosque de expansion minimo, util en ciertos problemas, sin embargo asumimos el grafo es conexo.
 
 ### Representación de la entrada
 
