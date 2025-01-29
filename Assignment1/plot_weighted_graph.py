@@ -1,4 +1,4 @@
-from minimum_spanning_tree import Graph
+from ejercicio5_final import Graph
 import sys
 
 

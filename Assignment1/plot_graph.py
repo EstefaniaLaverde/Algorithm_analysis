@@ -1,4 +1,4 @@
-from breadth_first_search import Graph
+from ejercicio1_final import FacebookNetwork
 import sys
 
 
@@ -16,7 +16,7 @@ if __name__=='__main__':
             a,b=map(int,f.readline().split())
             edges.append([a,b])
 
-    G=Graph(nodes,edges)
+    G=FacebookNetwork(nodes,edges)
 
     G.draw_graph()
 
