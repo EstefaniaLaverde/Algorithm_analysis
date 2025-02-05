@@ -1,4 +1,4 @@
-# Tarea 1 Análisis de algoritmos
+# Tarea 1 Análisis de Algoritmos
 
 ## Ejercicio 1
 
@@ -37,48 +37,25 @@ Ejemplo, para un grafo que es un ciclo de 4 elementos, el archivo de texto lucir
 4 1
 ```
 
-<!-- Es posible encontrar más archivos de ejemplo en la carpeta tests_eje1. -->
-
 ### Modo de uso
 
-Una vez que se tiene el archivo de texto con el formato definido, es suficiente con ejecutar el comando:
+Una vez que se tiene el archivo de texto con el formato definido, es suficiente con ubicarse en la carpeta donde se encuentra el archivo *ejercicio1_final.py* y ejecutar el comando:
 
 ```bash
-python .\Assignment1\ejercicio1_final.py path_to_my_test_file.in path_to_my_output.out
+python ejercicio1_final.py path_to_my_test_file.in path_to_my_output.out
 ```
 
 Donde ``path_to_my_test_file.in`` es el path al archivo de texto con el grafo que queremos evaluar y ``path_to_my_output.out`` es el path al archivo de texto con el resultado.
 
 Tras ejecutar este comando podremos ver en la consola True o False dependiendo de si el grafo cumple o no con la teoría de los 6 grados de separación.
 
-<!-- ### Testeo
-
-Para propósitos de testeo pusimos varios archivos de texto con descripciones de grafos en la carpeta tests_eje1, varios de estos fueron escritos a mano con el propósito de evaluar grafos con estructuras particulares, por ejemplo caminos, ciclos, grafos no conexos, etc.
-
-Adicionalmente, en Assignment1\generate_test1.py, tenemos un script para generar grafos de forma aleatoria para poder testear aún más el algoritmo, podemos generar un archivo de texto con un grafo aleatorio ejecutando el comando:
-
-```bash
-python Assignment1\generate_test1.py path_to_my_test_file.txt n m
-```
-
-Donde path_to_my_test_file.txt es el path donde queremos que quede guardado el grafo recién generado, n la cantidad de nodos del grafo a generar y m la cantidad de aristas. -->
-
-<!-- ### Visualización
-
-Para asistir en el testeo hemos agregado un script de visualización, para así poder graficar y verificar la corrección de los resultados manualmente de forma fácil, para hacer esto es suficiente con ejecutar el comando:
-
-```bash
-python .\Assignment1\plot_graph.py path_to_my_test_file.txt
-```
-
-Donde path_to_my_test_file.txt es el path a un archivo de texto con el grafo que queremos visualizar. -->
 
 ### Solución alternativa
 
-De acuerdo a una propuesta que surgió en clase, también tenemos una solución alternativa para el ejercicio 1 utilizando multiplicación de matrices, para solucionar el ejercicio 1 con esta solución debemos usar el comando:
+De acuerdo a una propuesta que surgió en clase, también tenemos una solución alternativa para el ejercicio 1 utilizando multiplicación de matrices (haciendo uso de la librería *numpy*). Para solucionar el ejercicio 1 con esta propuesta debemos usar el comando:
 
 ```bash
-python Assignment1\ejercicio1_matrix.py path_to_my_test_file.in path_to_my_output.out
+python ejercicio1_matrix.py path_to_my_test_file.in path_to_my_output.out
 ```
 Donde ``path_to_my_test_file.in`` es el path al archivo de texto con el grafo que queremos evaluar y ``path_to_my_output.out`` es el path al archivo de texto con el resultado.
 
@@ -109,6 +86,8 @@ Bajo este planteamiento, vamos a implementar el algoritmo de Kruskal para árbol
 
 - Se asume que doble vía da lugar a aristas bidireccionales o no dirigidas, si bien es posible asumir en un principio que las aristas son dirigidas, construir una solución al problema que preserve direccionalidad (es decir que las doble vías también son dirigidas), se convierte en el problema de Minimum Strong Spanning Subdigraphs (MSSS), el cual es un problema NP-hard (*Digraphs: Theory, algorithms and applications,  Prof. Jørgen Bang-Jensen, Prof. Gregory Z. Gutin (auth.), pag 483, primera frase de la seccion 12.2*) y por tanto no se dispone de algoritmo eficiente para solucionar el problema para grafos con miles de nodos.
 
+- Se asume que el grafo es conexo, pues en una ciudad debe ser posible transitar desde cualquier punto hacia cualquier otro punto, en caso de aplicar Kruskal a un grano no conex, se obtiene el bosque de expansion minimo, util en ciertos problemas, sin embargo asumimos el grafo es conexo.
+  
 ### Representación de la entrada
 
 Para representar el grafo con el que modelamos la ciudad utilizamos un archivo de texto con las siguientes especificaciones:
@@ -131,11 +110,10 @@ Ejemplo, para un grafo que es un ciclo de 4 elementos con costos consecutivos, e
 <!-- Es posible encontrar más archivos de ejemplo en la carpeta tests_eje5. -->
 
 ### Modo de uso
-
-Una vez que se tiene el archivo de texto con el formato definido, es suficiente con ejecutar el comando:
+Una vez que se tiene el archivo de texto con el formato definido, es suficiente con ubicarse en la carpeta donde se encuentra el archivo *ejercicio5_final.py* y ejecutar el comando:
 
 ```bash
-python Assignment1\ejercicio5_final.py path_to_my_test_file.in path_to_my_output.out
+python ejercicio5_final.py path_to_my_test_file.in path_to_my_output.out
 ```
 
 Donde ``path_to_my_test_file.in`` es el path al archivo de texto con el grafo que queremos evaluar y ``path_to_my_output.out`` es el path al archivo de texto con el resultado.
@@ -154,22 +132,5 @@ Ejemplo:
 2 3 4
 ```
 
-<!-- ### Testeo
-
-Al igual que en el ejercicio anterior hemos escrito archivos de texto con grafos de diversas estructuras para probar el algoritmo, se puede generar grafos aleatorios con peso utilizando el comando:
-
-```bash
-python Assignment1\generate_test5.py n m min_cost max_cost path_to_my_test_file.txt
-```
-
-Donde n es la cantidad de nodos en el grafo a generar, m la cantidad de aristas, min_cost y max_cost los costos mínimos y máximos de las aristas y path_to_my_test_file.txt el path al archivo donde queremos guardar el grafo aleatorio generado.
-
-### Visualización
-
-Al igual que en el ejercicio anterior agregamos un script de visualización, la diferencia importante es que con este script podemos visualizar grafos con peso.
-
-```bash
-python .\Assignment1\plot_weighted_graph.py path_to_my_test_file.txt
-```
-
-Donde path_to_my_test_file.txt es el path a un archivo de texto con el grafo que queremos visualizar. -->
+---
+Santiago Martínez, Pablo Ortega, Estefanía Laverde
