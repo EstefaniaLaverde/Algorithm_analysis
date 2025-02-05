@@ -1,0 +1,19 @@
+Categoría de grupo
+Grupos tareas y proyecto
+Nombre de grupo
+AAG05
+Instrucciones
+Implementar en grupos de 3 personas un programa que implemente los algoritmos de Edmonds-Karp y de push-relabel para determinar cuanto flujo se puede transportar en una red desde un nodo fuente a un nodo destino. El programa debe recibir un archivo de entrada con las siguientes especificaciones:
+
+La primera linea debe tener la cantidad de nodos de la red N. Se asume que el primer nodo (el cero) es la fuente y el último (el N-1) el destino.
+
+Las siguientes lineas tienen tres números que representan la información de ejes de la red. El primero es el id de nodo origen (de 0 a N-2), el segundo es el id de nodo destino (de 1 a N-1). El tercero es la capacidad del eje.
+
+Para cada algoritmo, el programa debe imprimir un archivo que indiqué cuanto flujo máximo se puede transportar en cada eje, cumpliendo las restricciones de capacidad y de balance de flujo, y el flujo total. También debe imprimir el tiempo de ejecución que requirió cada uno de los dos algoritmos.
+
+El programa debe validar que no haya más de un eje entre dos nodos de la red.
+
+Entregar un archivo zip que contenga el código fuente de la solución y un README.txt que indique cómo se debe ejecutar el programa implementado. El programa debe poder funcionar a partir de un archivo dado por el usuario y no puede hacer ninguna suposición acerca del sistema operativo o del sistema de archivos del usuario.
+
+Vence el 12 de febrero de 2025 18:00
+Disponible el 30 de enero de 2025 13:49. Oculto antes de que inicie la disponibilidad.
