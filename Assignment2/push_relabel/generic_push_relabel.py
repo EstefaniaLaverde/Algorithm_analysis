@@ -18,12 +18,14 @@ class Graph:
         self.num_vertices = num_vertices
         self.edges = {}
         self.vertices = [Vertex() for _ in range(num_vertices)]
+        self.orig_edges =[]
 
     def add_edge(self, u, v, capacity):
         if (u,v) in self.edges:
             raise AssertionError("el grafo tiene multiples edges para un mismo par de nodos")
         self.edges[(u, v)] = Edge(capacity)
         self.edges[(v, u)] = Edge(0)
+        self.orig_edges.append((u, v))
                 
 
     def get_neighbors(self, u):
@@ -92,9 +94,8 @@ class Graph:
                 active.append(u)
         
         edges_flow=[]
-        for edge in self.edges.keys():
-            if self.edges[edge].flow >=0:
-                edges_flow.append((edge[0], edge[1], self.edges[edge].flow))
+        for edge in self.orig_edges:
+            edges_flow.append((edge[0], edge[1], self.edges[edge].flow))
 
         return edges_flow, self.vertices[sink].excess
 
