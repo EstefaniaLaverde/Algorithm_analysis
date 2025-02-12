@@ -1,26 +1,63 @@
 import time
-
+import sys
 
 class Edge:
-    def __init__(self, capacity, flow=0):
+    def __init__(self, capacity:int, flow:int=0) -> None:
+        """
+        Inicializa un objeto Edge.
+
+        Args:
+            capacity (int): La capacidad máxima del borde.
+            flow (int, opcional): El flujo inicial. Por defecto es 0.
+        """
         self.capacity = capacity
         self.flow = flow
 
 
 class Vertex:
-    def __init__(self, excess=0, height=0):
+    def __init__(self, excess:int=0, height:int=0) -> None:
+        """
+        Inicializa un objeto Vertex.
+
+        Args:
+            excess (int, opcional): El exceso de flujo en el vértice. Por defecto es 0.
+            height (int, opcional): La altura del vértice. Por defecto es 0.
+        """
         self.excess = excess
         self.height = height
 
 
 class Graph:
-    def __init__(self, num_vertices):
+    def __init__(self, num_vertices:int) -> None:
+        """
+        Inicializa los atributos del grafo.
+
+        Args:
+            num_vertices (int): El número de vértices en el grafo.
+
+        Atributos:
+            num_vertices (int): El número de vértices en el grafo.
+            edges (dict): Un diccionario que mapea pares de vértices a objetos Edge.
+            vertices (list): Una lista de objetos Vertex, cada uno representando un vértice.
+            orig_edges (list): Una lista de pares de vértices, representando los bordes originales del grafo.
+        """
         self.num_vertices = num_vertices
         self.edges = {}
         self.vertices = [Vertex() for _ in range(num_vertices)]
         self.orig_edges =[]
 
-    def add_edge(self, u, v, capacity):
+    def add_edge(self, u:int, v:int, capacity:int) -> None:
+        """
+        Agrega un eje al grafo.
+
+        Args:
+            u (int): El índice del vértice de origen.
+            v (int): El índice del vértice de destino.
+            capacity (int): La capacidad del eje.
+
+        Raises:
+            AssertionError: Si el grafo ya tiene un eje entre los vértices u y v.
+        """
         if (u,v) in self.edges:
             raise AssertionError("el grafo tiene multiples edges para un mismo par de nodos")
         self.edges[(u, v)] = Edge(capacity)
@@ -28,27 +65,58 @@ class Graph:
         self.orig_edges.append((u, v))
                 
 
-    def get_neighbors(self, u):
+    def get_neighbors(self, u:int):
+        """
+        Retorna una lista de los vecinos del vértice u.
+
+        Args:
+            u (int): El índice del vértice del cual se desean obtener los vecinos.
+
+        Returns:
+            list: Una lista de índices de los vecinos del vértice u.
+        """
         return [v for (x, v) in self.edges if x == u]
 
-    def preflow(self, source):
+    def preflow(self, source: int) -> None:
+        """
+        Inicializa el flujo en el grafo, saturando los bordes que salen del vértice fuente.
 
-        # inicializacion de la altura del origen
+        Args:
+            source (int): El índice del vértice fuente.
+
+        Raises:
+            AssertionError: Si el índice del vértice fuente es inválido.
+        """
+        if source < 0 or source >= self.num_vertices:
+            raise AssertionError("Índice del vértice fuente inválido")
+
+        # Inicializacion de la altura del origen
         self.vertices[source].height = self.num_vertices
         for v in self.get_neighbors(source):
             edge = self.edges[(source, v)]
 
-            # saturar los nodos conectados al origen, aumentar el excess en el nodo y reducirlo en el origen
+            # Saturar los nodos conectados al origen, aumentar el excess en el nodo y reducirlo en el origen
             edge.flow = edge.capacity
             self.vertices[v].excess += edge.flow
             self.vertices[source].excess -= edge.flow
 
-            # flujo en la red residual
+            # Flujo en la red residual
             self.edges[(v, source)].flow = -edge.flow
 
-    def push(self, u, v):
-        edge = self.edges[(u, v)]
-        residual = edge.capacity - edge.flow
+    def push(self, u: int, v: int) -> bool:
+        """
+        Intenta empujar flujo desde el vértice u hacia el vértice v.
+
+        Args:
+            u (int): El índice del vértice de origen.
+            v (int): El índice del vértice de destino.
+
+        Returns:
+            bool: Retorna True si se pudo empujar flujo, False de lo contrario.
+        """
+        edge = self.edges[(u, v)]  # Obtener el eje entre u y v
+        residual = edge.capacity - edge.flow  # Calcular la capacidad residual del eje
+        
         if self.vertices[u].excess > 0 and residual > 0 and self.vertices[u].height == self.vertices[v].height + 1:
             delta = min(self.vertices[u].excess, residual)
             edge.flow += delta
@@ -58,7 +126,13 @@ class Graph:
             return True
         return False
 
-    def relabel(self, u):
+    def relabel(self, u: int) -> None:
+        """
+        Reetiqueta el vértice u ajustando su altura según la altura de sus vecinos.
+
+        Args:
+            u (int): El índice del vértice a reetiquetar.
+        """
         min_height = float('inf')
 
         for v in self.get_neighbors(u):
@@ -68,7 +142,17 @@ class Graph:
         if min_height < float('inf'):
             self.vertices[u].height = min_height + 1
 
-    def generic_push_relabel(self, source=0, sink=None):
+    def generic_push_relabel(self, source: int = 0, sink: int = None) -> tuple[list[tuple[int, int, int]], int]:
+        """
+        Implementa el algoritmo genérico de push-relabel para determinar el flujo máximo en una red.
+
+        Args:
+            source (int): El índice del nodo fuente. Por defecto es 0.
+            sink (int): El índice del nodo destino. Si no se proporciona, se asume que es el último nodo. Por defecto es None.
+
+        Returns:
+            Tuple[List[Tuple[int, int, int]], int]: Una tupla que contiene una lista de tuplas que representan el flujo en cada eje y el flujo total.
+        """
         if sink is None:
             sink = self.num_vertices - 1
 
@@ -108,8 +192,8 @@ if __name__=='__main__':
     #input_path: path del archivo con el grafo que queremos evaluar
     #output_path: path donde guaramos los resultados del procesamiento
 
-    input_path="C:/Users/pablo/OneDrive/Documents/Universidad/Dalgo2/Algorithm_analysis/Assignment2/push_relabel/tests/test1.txt"
-    output_path="C:/Users/pablo/OneDrive/Documents/Universidad/Dalgo2/Algorithm_analysis/Assignment2/push_relabel/results/result1.txt"
+    input_path=sys.argv[1]
+    output_path=sys.argv[2]
 
     #leer grafo desde archivo txt
     with open(input_path) as f:
