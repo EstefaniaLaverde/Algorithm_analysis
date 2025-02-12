@@ -203,7 +203,7 @@ class Graph_PushRelabel:
         self.edges[(u, v)] = Edge(capacity)
         self.edges[(v, u)] = Edge(0)
         self.adj[u].append(v)
-        self.adj[v].append(u)  # residaul
+        self.adj[v].append(u)  # residual
         self.orig_edges.append((u, v))
 
     def get_neighbors(self, u:int):
