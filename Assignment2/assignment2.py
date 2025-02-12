@@ -178,11 +178,13 @@ class Graph_PushRelabel:
             edges (dict): Un diccionario que mapea pares de vértices a objetos Edge.
             vertices (list): Una lista de objetos Vertex, cada uno representando un vértice.
             orig_edges (list): Una lista de pares de vértices, representando los bordes originales del grafo.
+            adj (dict): Un diccionario que mapea cada vértice a una lista de sus vecinos (para la lista de adyacencia).
         """
         self.num_vertices = num_vertices
         self.edges = {}
+        self.adj = {u: [] for u in range(num_vertices)}
         self.vertices = [Vertex() for _ in range(num_vertices)]
-        self.orig_edges =[]
+        self.orig_edges = []
 
     def add_edge(self, u:int, v:int, capacity:int) -> None:
         """
@@ -196,12 +198,13 @@ class Graph_PushRelabel:
         Raises:
             AssertionError: Si el grafo ya tiene un eje entre los vértices u y v.
         """
-        if (u,v) in self.edges:
-            raise AssertionError("el grafo tiene multiples edges para un mismo par de nodos")
+        if (u, v) in self.edges:
+            raise AssertionError("Multiple edges for the same pair of nodes are not allowed")
         self.edges[(u, v)] = Edge(capacity)
         self.edges[(v, u)] = Edge(0)
+        self.adj[u].append(v)
+        self.adj[v].append(u)  # residaul
         self.orig_edges.append((u, v))
-                
 
     def get_neighbors(self, u:int):
         """
@@ -213,7 +216,7 @@ class Graph_PushRelabel:
         Returns:
             list: Una lista de índices de los vecinos del vértice u.
         """
-        return [v for (x, v) in self.edges if x == u]
+        return self.adj[u]
 
     def preflow(self, source: int) -> None:
         """
@@ -279,6 +282,7 @@ class Graph_PushRelabel:
                 min_height = min(min_height, self.vertices[v].height)
         if min_height < float('inf'):
             self.vertices[u].height = min_height + 1
+
 
     def generic_push_relabel(self, source: int = 0, sink: int = None) -> tuple[list[tuple[int, int, int]], int]:
         """
