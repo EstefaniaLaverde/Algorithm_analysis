@@ -1,4 +1,5 @@
 # Tarea 2 Análisis de Algoritmos
+**Autores:** Santiago Martínez, Pablo Ortega, Estefanía Laverde
 
 ## Implementación
 En el archivo **Assignment2** se implementan los algoritmos de Push-Relabel y Edmonds-Karp. Estos algoritmos resuelven el problema de flujo máximo en una red de flujo.  Ambos algoritmos se ejecutan sobre un archivo de input con las siguientes características:
