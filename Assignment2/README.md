@@ -15,7 +15,7 @@ Una vez que se tiene el archivo de texto con el formato definido, es suficiente 
 python assignment1.py test_file.in output_file.out
 ```
 
-Donde *test_file.in* es el path al archivo de texto con el grafo que queremos evaluar y *output_file.out* es el archivo con el resultado de ambos algoritmos. El output cuenta con el flujo máximo por eje, el valor del flujo máximo y el tiempo de ejecución.
+Donde *test_file.in* es el archivo de texto con el grafo que queremos evaluar y *output_file.out* es el archivo con el resultado de ambos algoritmos. El output cuenta con el flujo máximo por eje, el valor del flujo máximo y el tiempo de ejecución.
 
 ## Ejemplo
 
