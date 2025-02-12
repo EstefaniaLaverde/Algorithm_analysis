@@ -1,5 +1,6 @@
 import time
 import sys
+from collections import deque
 
 class Edge:
     def __init__(self, capacity:int, flow:int=0) -> None:
@@ -142,6 +143,7 @@ class Graph:
         if min_height < float('inf'):
             self.vertices[u].height = min_height + 1
 
+
     def generic_push_relabel(self, source: int = 0, sink: int = None) -> tuple[list[tuple[int, int, int]], int]:
         """
         Implementa el algoritmo genérico de push-relabel para determinar el flujo máximo en una red.
@@ -158,13 +160,14 @@ class Graph:
 
         self.preflow(source)
 
-        active = [u for u in range(self.num_vertices) if u not in (source, sink) and self.vertices[u].excess > 0]
+        # Usamos deque para una cola eficiente en O(1) para popleft() y append()
+        active = deque(u for u in range(self.num_vertices)
+                    if u not in (source, sink) and self.vertices[u].excess > 0)
 
         while active:
-            u = active.pop(0)
+            u = active.popleft()
             pushed = False
             for v in self.get_neighbors(u):
-
                 if self.push(u, v):
                     pushed = True
                     if v not in (source, sink) and self.vertices[v].excess > 0 and v not in active:
@@ -177,11 +180,12 @@ class Graph:
                     self.relabel(u)
                 active.append(u)
         
-        edges_flow=[]
+        edges_flow = []
         for edge in self.orig_edges:
             edges_flow.append((edge[0], edge[1], self.edges[edge].flow))
 
         return edges_flow, self.vertices[sink].excess
+
 
 
 
@@ -195,6 +199,7 @@ if __name__=='__main__':
     input_path=sys.argv[1]
     output_path=sys.argv[2]
 
+    
     #leer grafo desde archivo txt
     with open(input_path) as f:
         n=int(f.readline())
@@ -213,7 +218,7 @@ if __name__=='__main__':
     for u,v,c in edges:
         G.add_edge(u,v,c)
 
-    #medir tiempo ejecucion de edmond_karps
+    #medir tiempo ejecucion de generic_push_relabel
     start=time.time()
     edges_flow,total_flow=G.generic_push_relabel(source = 0, sink = n-1)
     end=time.time()

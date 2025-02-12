@@ -296,13 +296,14 @@ class Graph_PushRelabel:
 
         self.preflow(source)
 
-        active = [u for u in range(self.num_vertices) if u not in (source, sink) and self.vertices[u].excess > 0]
+        # Usamos deque para una cola eficiente en O(1) para popleft() y append()
+        active = deque(u for u in range(self.num_vertices)
+                    if u not in (source, sink) and self.vertices[u].excess > 0)
 
         while active:
-            u = active.pop(0)
+            u = active.popleft()
             pushed = False
             for v in self.get_neighbors(u):
-
                 if self.push(u, v):
                     pushed = True
                     if v not in (source, sink) and self.vertices[v].excess > 0 and v not in active:
@@ -315,7 +316,7 @@ class Graph_PushRelabel:
                     self.relabel(u)
                 active.append(u)
         
-        edges_flow=[]
+        edges_flow = []
         for edge in self.orig_edges:
             edges_flow.append((edge[0], edge[1], self.edges[edge].flow))
 
