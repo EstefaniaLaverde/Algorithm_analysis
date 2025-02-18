@@ -2,6 +2,7 @@ import random
 import networkx as nx
 import matplotlib.pyplot as plt
 import itertools
+import pandas as pd
 
 
 def generate_edge(n):
@@ -37,17 +38,21 @@ def generate_graph(n,m):
 
 def planarity_experiment(n,attempts):
     max_edges=3*n-6
-    ans=[]
+    probs=[]
     for edge_count in range(max_edges+1):
         planar_count=0
         for i in range(attempts):
             G=generate_graph(n,edge_count)
             planar_count+=nx.is_planar(G)
 
-        ans.append(planar_count/attempts)
+        probs.append(planar_count/attempts)
 
-    return ans
+    return probs
 
+
+def save_graph_to_xlsx(G,output_path):
+    df=pd.DataFrame(G.edges,columns=['node1','node2'])
+    df.to_excel(output_path)
 
 if __name__=='__main__':
     n=20
