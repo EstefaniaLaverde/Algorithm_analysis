@@ -19,6 +19,16 @@ Se crean los siguientes grafos aleatorios planos y se grafican planarmente usand
 **Enunciado**: De acuerdo con los experimentos, para un grafo de 20 vértices, desde qué cantidad de ejes aleatorios es poco probable generar un grafo planar?. Cómo se compara esto con el límite teórico dado por |E|<= 3|V| - 6
 
 <!-- TODO: explicar experimentos y mostrar resultados -->
+Se hace un script para generar grafos aleatorios con 20 nodos, cuya cantidad de ejes varia entre 0 y 54 (54=3*20-6 es el maximo de ejes posible para un grafo planar), los grafos generados se ponen en buckets dependiento de su cantidad de ejes y se usa la libreria networkx para determinar planaridad y asi contar la cantidad de grafos planares en cada bucket, con esto podemos aproximar la probabilidad de que un grafo aleatorio sea planar en funcion de la cantidad de ejes, para cada cantidad de ejes 0<=e<=54 se generan 1000 grafos con e ejes.
+
+![probabilidades de planaridad](planarity_experiment.png)
+
+**Obervaciones**:
+
+- La probabilidad de que el grafo sea planar es muy baja a partir del valor 40, a ojo se puede ver que cerca de este valor la curva es casi la recta constante 0.
+- Se garantiza que la probabilidad es 0 para e>54
+- Si bien todos los arboles de 20 nodos son planares y tienen 19 ejes, al generar un grafo aleatorio es posible que el grafo no sea conexo y por tanto no sea arbol, asi se tiene la posibilidad de que alguna de sus componentes conexas sea no planar y por tanto el grafo no sea planar, por esta razon la probabilidad de planaridad cerca de e=20 no es exactamente 1 aunque cercana.
+- La curva parece ser aproximable por una funcion sigmoide.
 
 ## Ejercicio 3
 **Enunciado**: Diseñar un grafo planar de 20 o más vértices que tenga al menos 2|V| ejes.

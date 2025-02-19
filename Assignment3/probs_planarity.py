@@ -70,6 +70,13 @@ if __name__=='__main__':
     probs=planarity_experiment(n,attempts)
 
     plt.plot(list(range(max_edges+1)),probs)
-    plt.show()
+    plt.xlabel('number of edges')
+    plt.ylabel('planarity probability')
+    
+    plt.savefig('planarity_experiment.png')
+    #plt.show()
+    
+
+
 
 
