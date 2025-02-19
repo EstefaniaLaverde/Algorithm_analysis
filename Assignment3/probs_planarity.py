@@ -49,6 +49,14 @@ def planarity_experiment(n,attempts):
 
     return probs
 
+def generate_planar_graph(n,m):
+    G=generate_graph(n,m)
+
+    while not nx.is_planar(G):
+        G=generate_graph(n,m)
+    
+    return G
+
 
 def save_graph_to_xlsx(G,output_path):
     df=pd.DataFrame(G.edges,columns=['node1','node2'])
