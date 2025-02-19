@@ -7,7 +7,11 @@ Se crean los siguientes grafos aleatorios planos y se grafican planarmente usand
 - Grafo de 20 vértices y 35 aristas:
   ![grafo1_ej](graphs/detangled1.png)
 - Grafo de 42 vértices y 48 aristas:
-  ![grafo1_ej](graphs/detangled2.png) 
+  ![grafo1_ej](graphs/detangled2.png)
+- Grafo de 25 vertices y 43 aristas:
+  ![grafo1_ej](graphs/detangled3.png)
+- Grafo de 32 vertices y 39 aristas:
+  ![grafo1_ej](graphs/detangled4.png)
 
   <!-- TODO: terminar de colocar los ejemplos -->
 
