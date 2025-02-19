@@ -18,6 +18,87 @@ Se crean los siguientes grafos aleatorios planos y se grafican planarmente usand
 ## Ejercicio 2
 **Enunciado**: De acuerdo con los experimentos, para un grafo de 20 vértices, desde qué cantidad de ejes aleatorios es poco probable generar un grafo planar?. Cómo se compara esto con el límite teórico dado por |E|<= 3|V| - 6
 
+```python
+import random
+import networkx as nx
+import matplotlib.pyplot as plt
+import itertools
+import pandas as pd
+
+
+def generate_edge(n):
+    a=random.randint(0,n-1)
+    b=random.randint(0,n-1)
+    while a==b:
+        b=random.randint(0,n-1)
+
+    return (min(a,b),max(a,b))
+
+def generate_edges(n,m):
+    used_edges=set()
+
+    m=min(m,(n*(n-1))//2)
+
+    while len(used_edges)<m:
+        a,b=generate_edge(n)
+        if (a,b) not in used_edges:
+            used_edges.add((a,b))
+    
+    return list(used_edges)
+
+def generate_graph(n,m):
+    G=nx.Graph()
+
+    G.add_nodes_from(range(n))
+
+    edges=generate_edges(n,m)
+    G.add_edges_from(edges)
+
+    return G
+
+
+def planarity_experiment(n,attempts):
+    max_edges=3*n-6
+    probs=[]
+    for edge_count in range(max_edges+1):
+        planar_count=0
+        for i in range(attempts):
+            G=generate_graph(n,edge_count)
+            planar_count+=nx.is_planar(G)
+
+        probs.append(planar_count/attempts)
+
+    return probs
+
+def generate_planar_graph(n,m):
+    G=generate_graph(n,m)
+
+    while not nx.is_planar(G):
+        G=generate_graph(n,m)
+    
+    return G
+
+
+def save_graph_to_xlsx(G,output_path):
+    df=pd.DataFrame(G.edges,columns=['node1','node2'])
+    df.to_excel(output_path)
+
+if __name__=='__main__':
+    n=20
+    max_edges=3*n-6
+    attempts=1000
+
+    probs=planarity_experiment(n,attempts)
+
+    plt.plot(list(range(max_edges+1)),probs)
+    plt.xlabel('number of edges')
+    plt.ylabel('planarity probability')
+    
+    plt.savefig('planarity_experiment.png')
+    #plt.show()
+```
+
+
 <!-- TODO: explicar experimentos y mostrar resultados -->
 Se hace un script para generar grafos aleatorios con 20 nodos, cuya cantidad de ejes varia entre 0 y 54 (54=3*20-6 es el maximo de ejes posible para un grafo planar), los grafos generados se ponen en buckets dependiento de su cantidad de ejes y se usa la libreria networkx para determinar planaridad y asi contar la cantidad de grafos planares en cada bucket, con esto podemos aproximar la probabilidad de que un grafo aleatorio sea planar en funcion de la cantidad de ejes, para cada cantidad de ejes 0<=e<=54 se generan 1000 grafos con e ejes.
 
