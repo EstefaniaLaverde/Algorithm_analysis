@@ -1,5 +1,24 @@
 # Tarea 3 Análisis de Algoritmos
 **Autores:** Santiago Martínez, Pablo Ortega, Estefanía Laverde
+## Ejercicio 1 
+**Enunciado**: Generar aleatoriamente y visualizar en Cytoscape grafos, simples, conexos y planares con diferentes números de vértices y ejes. La cantidad de vértices en todos los casos debe ser mayor o igual a 20.
+
+Se crean los siguientes grafos aleatorios planos y se grafican planarmente usando Cytoscape. 
+- Grafo de 20 vértices y 35 aristas:
+  ![grafo1_ej](graphs/detangled1.png)
+- Grafo de 42 vértices y 48 aristas:
+  ![grafo1_ej](graphs/detangled2.png)
+- Grafo de 25 vertices y 43 aristas:
+  ![grafo1_ej](graphs/detangled3.png)
+- Grafo de 32 vertices y 39 aristas:
+  ![grafo1_ej](graphs/detangled4.png)
+
+  <!-- TODO: terminar de colocar los ejemplos -->
+
+## Ejercicio 2
+**Enunciado**: De acuerdo con los experimentos, para un grafo de 20 vértices, desde qué cantidad de ejes aleatorios es poco probable generar un grafo planar?. Cómo se compara esto con el límite teórico dado por |E|<= 3|V| - 6
+
+<!-- TODO: explicar experimentos y mostrar resultados -->
 
 ## Ejercicio 3
 **Enunciado**: Diseñar un grafo planar de 20 o más vértices que tenga al menos 2|V| ejes.
