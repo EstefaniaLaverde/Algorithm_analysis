@@ -27,4 +27,6 @@ def create_random_graph(num_vertices:int, file_name:str) -> None:
     df.to_csv(file_name, index=False)
 
 
-create_random_graph(20, 'graphs/grafo1.csv')
+# create_random_graph(20, 'graphs/grafo1.csv')
+create_random_graph(4, 'graphs/grafo2_ej.csv')
+
