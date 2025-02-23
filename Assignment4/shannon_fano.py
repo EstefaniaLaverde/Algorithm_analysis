@@ -69,7 +69,7 @@ def get_code_shannon_fano(text):
         freqs[c]=count/text_size
 
     #obtener listado caracteres segun frecuencia
-    cs=list(set(text))
+    cs=list(counts.values())
     cs=sorted(cs,key=lambda x: freqs[x],reverse=True)
 
     L=[math.ceil(math.log2(1/freqs[c])) for c in cs]
