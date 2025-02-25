@@ -68,9 +68,12 @@ def get_code_shannon_fano(text):
     for c,count in counts.items():
         freqs[c]=count/text_size
 
-    #obtener listado caracteres segun frecuencia
-    cs=list(counts.values())
-    cs=sorted(cs,key=lambda x: freqs[x],reverse=True)
+    # #obtener listado caracteres segun frecuencia
+    # cs=list(counts.values())
+    # cs=sorted(cs,key=lambda x: freqs[x],reverse=True)
+
+    cs = list(counts.keys())  # Cambiar .values() por .keys()
+    cs = sorted(cs, key=lambda x: freqs[x], reverse=True)
 
     L=[math.ceil(math.log2(1/freqs[c])) for c in cs]
 
@@ -87,6 +90,7 @@ def get_code_shannon_fano(text):
 
         codification[cs[i]]=current_cod
 
-    print_codification_report(counts,codification)
+    # print_codification_report(counts,codification)
+    cod_text = ''.join([codification[char] for char in text])
 
-    return codification
+    return cod_text,codification
