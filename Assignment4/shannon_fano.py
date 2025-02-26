@@ -1,5 +1,5 @@
 import math
-
+import sys
 
 def print_codification_report(counts,codification):
     #hacer prints con reportes de la codificacion
@@ -90,7 +90,20 @@ def get_code_shannon_fano(text):
 
         codification[cs[i]]=current_cod
 
-    # print_codification_report(counts,codification)
+    print_codification_report(counts,codification)
     cod_text = ''.join([codification[char] for char in text])
 
     return cod_text,codification
+
+
+if __name__=='__main__':
+    input_file=sys.argv[1]
+    output_file=sys.argv[2]
+
+    with open(input_file) as f:
+        text=f.read()
+
+    cod_text,codification=get_code_shannon_fano(text)
+
+    with open(output_file,'w') as f:
+        f.write(cod_text)
