@@ -64,6 +64,10 @@ def suffix_array(text):
 
             ranks_merge[inds[i]][0]=rank
 
+        #se han ordenado completamente los indices
+        if rank==n:
+            return inds
+
         h=h*2
 
     return inds
