@@ -24,7 +24,11 @@ def search(pat, text, suffArr):
 	
 # construir arreglo de sufijos
 def buildSuffixArray(text):
-    suffArr=sorted(range(len(text)), key=lambda i: text[i:])
+    n=len(text)
+    suffixes = [text[i:] for i in range(n)]
+    suffixes.sort()
+    suffArr = [text.index(suff) for suff in suffixes]
+
     return suffArr
 
 
