@@ -161,7 +161,7 @@ def solve_querys(text_file,query_file,output_path):
                 f.write('\t'+str(p))
             f.write('\n')
 
-    return end+start
+    return end-start
 
 
 
