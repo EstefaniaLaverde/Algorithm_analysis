@@ -1,6 +1,13 @@
 
 ### Instrucciones de uso
 
+Se implementa la construcción del Suffix Array y el buscador en text_searcher.py, para hacer el arreglo de un archivo y hacer busquedas sobre el mismo se debe ejecutar el siguiente comando. 
+
+```bash
+python text_searcher.py text_file.txt query_file.txt output_file.txt
+```
+
+Al ejecutar se creará el arreglo de sufijos usando el text_file.txt, se hacen las consultas en query_file.txt y se escriben los resultados en output_file.txt.
 
 
 
