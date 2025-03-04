@@ -27,12 +27,12 @@ def generate_query_file(query_file,m):
 if __name__=='__main__':
 
     text_file=sys.argv[1]
-    n=sys.argv[2]
+    n=int(sys.argv[2])
 
     query_file=sys.argv[3]
-    m=sys.argv[4]
+    m=int(sys.argv[4])
 
-    generate_files(text_file,n)
+    generate_text_file(text_file,n)
     generate_query_file(query_file,m)
 
 
