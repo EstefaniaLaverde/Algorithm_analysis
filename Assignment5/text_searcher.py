@@ -172,27 +172,8 @@ def solve_querys(text_file,query_file,output_path):
     
 
 if __name__=='__main__':
-    #text_file=sys.argv[1]
-    #query_file=sys.argv[2]
-    #output_path=sys.argv[3]    
+    text_file=sys.argv[1]
+    query_file=sys.argv[2]
+    output_path=sys.argv[3]
 
-
-    text='naaaanaaannaaa'
-    pattern='naaan'
-
-    suff_arr=suffix_array(text)
-
-    print(get_positions(text,suff_arr,pattern))
-
-
-
-    """with open('tests/text_file_1000000.txt')as f:
-        text=f.read()
-
-    print('loaed file')
-
-    start=time.time()
-    suff_arr=suffix_array(text)
-    end=time.time()
-
-    print(end-start)"""
+    solve_querys(text_file,query_file,output_path)
