@@ -32,11 +32,11 @@ def solve(edges:list) -> list:
 
         vertex_max_degree = [v1,v2][[degrees[v1], degrees[v2]].index(max([degrees[v1], degrees[v2]]))]
 
-        print("Edges: ", edges)
-        print("Selected edge: ", edge)
-        print("Current degrees of all vertices: ", degrees)
-        print("Current neighbours of all vertices: ", neighbours)
-        print("Vertex with maximum degree: ", vertex_max_degree)
+        #print("Edges: ", edges)
+        #print("Selected edge: ", edge)
+        #print("Current degrees of all vertices: ", degrees)
+        #print("Current neighbours of all vertices: ", neighbours)
+        #print("Vertex with maximum degree: ", vertex_max_degree)
 
         # update neighbours and degrees and delete edge
         for neighbour in neighbours[vertex_max_degree]:
@@ -56,5 +56,5 @@ def solve(edges:list) -> list:
 
 # TODO: add main
 
-edges = [(1,2),(2,3),(3,4),(2,4),(2,5)]
-print(solve(edges))
+#edges = [(1,2),(2,3),(3,4),(2,4),(2,5)]
+#print(solve(edges))
