@@ -1,6 +1,6 @@
 # Escoger el vértice de mayor grado, descartar los ejes que llegan al vertice escogido y repetir hasta que no queden ejes.
 
-def ejercicio2(edges:list) -> list:
+def solve(edges:list) -> list:
 
     sol = []
 
@@ -51,5 +51,5 @@ def ejercicio2(edges:list) -> list:
     return sol
 
 # TODO: read tests 
-edges = [(1,2),(2,3),(3,4),(2,4),(2,5)]
-print(ejercicio2(edges))
+#edges = [(1,2),(2,3),(3,4),(2,4),(2,5)]
+#print(solve(edges))
