@@ -16,7 +16,7 @@ def solve(edges: list) -> list:
         degrees[v] = degrees.get(v, 0) + 1
     
     while edge_set:
-        edge = random.choice(tuple(edge_set))
+        edge = edge_set.pop()
         u, v = edge
         
         if degrees[u] >= degrees[v]:

@@ -44,7 +44,7 @@ def probar_algoritmos():
                 start = time.time()
                 cover = alg_f(edges.copy())
                 end = time.time()
-                algoritmos.append({
+                resultados.append({
                     "Vertices": n,
                     "Multiplicador": mult,
                     "Edges": m,
