@@ -77,4 +77,8 @@ Para probar los algorítmos se realizaron pruebas con grafos con diferente numer
 
 # Casos en los que los algoritmos 2 y 3 la solución es peor que 2 veces el número de vértices óptimo.
 
+En la imagen se muestra un grafo bipartito con dos conjuntos de vértices: uno superior con 8 vértices y otro inferior con 17 vértices. La cobertura mínima de vértices en este grafo está compuesta por los 8 vértices del conjunto superior, ya que cada arista puede ser cubierta seleccionando únicamente estos vértices. Esta es la solución óptima. Sin embargo, al aplicar el algoritmo 2, se seleccionará primero el vértice del conjunto inferior que tiene grado 8. Luego, al eliminar sus aristas y continuar el proceso, se seguirá eligiendo vértices del conjunto inferior, ya que estos mantienen grados altos en comparación con los vértices del conjunto superior. Como resultado, el algoritmo termina seleccionando los 17 vértices del conjunto inferior, lo cual constituye una solución significativamente peor que la óptima. La razón entre el tamaño de esta solución y el tamaño de la solución óptima es de 17/8 > 2.
 
+De manera similar, el algoritmo 3 también puede conducir a la misma solución si en algún paso se elige una arista conectada al vértice de grado 8 del conjunto inferior. Una vez incluido este vértice en la cobertura, muchas aristas se eliminan en la parte superior, lo cual causa que se elijan nuevamente los vertices de abajo en cascada. Y en este caso también tendriamos una razón de 17/8 > 2.
+
+![alt text](image.png)
