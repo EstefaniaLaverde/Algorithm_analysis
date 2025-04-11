@@ -40,7 +40,17 @@ class random_selectable_set:
 
 
 
-def solve(edges):
+def solve(edges: list[tuple]) -> list:
+    """
+    Esta función resuelve el problema de encontrar un conjunto de nodos que cubren todas las aristas de un grafo.
+    Utiliza un algoritmo de selección de nodos basado en escoger aleatoriamente un eje, incluir aleatoriamente uno de los dos vértices conectados, descartar todos los demás ejes conectados por el vértice escogido y repetir hasta que no queden ejes.
+    
+    Parámetros:
+    edges (list): Una lista de aristas del grafo, representadas como tuplas de dos enteros.
+    
+    Retorna:
+    list: Un conjunto de nodos que cubren todas las aristas del grafo.
+    """
     neighs={}
 
     #ordernar cordenadas de los edges para representacion canonica

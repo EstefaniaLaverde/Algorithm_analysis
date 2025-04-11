@@ -3,21 +3,20 @@
 
 # Instrucciones de uso
 
-Se implementan los cucatro algoritmos de cubrimiento de vértices en los archivos `eje1.py`, `eje2.py`, `eje3.py` y `eje4.py` respectivamente. Se consolidan en el archivo `program.py`. Este programa recibe un archivo de texto con los ejes del grafo y en la última línea del archivo un número que indique el algoritmo a ejecutar (entre 1 y 4). A continuación se enseña un ejemplo de archivo de entrada.
+Se implementan los cucatro algoritmos de cubrimiento de vértices en los archivos `eje1.py`, `eje2.py`, `eje3.py` y `eje4.py` respectivamente. Se consolidan en el archivo `program.py`. Este programa recibe un archivo de texto con los ejes del grafo y un número que indique el algoritmo a ejecutar (entre 1 y 4). A continuación se enseña un ejemplo de archivo de entrada.
 
 ```bash
 1	2
 3	2
 2   4
-3
 ```
 
 Para correr el programa se debe ejecutar el siguiente comando:
 
 ```bash
-python program.py test_file.txt
+python program.py test_file.txt número
 ```
-Siendo `test_file.txt` el archivo de entrada con las especificaciones mencionadas anteriormente.
+Siendo `test_file.txt` el archivo de entrada con las especificaciones mencionadas anteriormente y `número` un valor entero entre 1 y 4 para usar el algoritmo deseado.
 
 # Experimento
 Para probar los algoritmos se realizaron pruebas con grafos de diferente número de vértices y ejes. Se utilizó un multiplicador para probar grafos con 100, 1000 y 10000 vértices con diferentes cantidades de ejes determinadas por los multiplicadores 10, 50 y 100 de la cantidad de vértices.

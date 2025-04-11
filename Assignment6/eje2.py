@@ -3,15 +3,20 @@ import heapq
 class updatable_heap:
     def __init__(self,values):
         self.values=values
-        heap.heapify(self.values)
+        heapq.heapify(self.values)
         self.values_pos={val:i for i,val in enumerate(self.values)}
 
+def solve(edges: list[tuple]) -> list:
+    """
+    Esta función resuelve el problema de encontrar un conjunto de nodos que cubren todas las aristas de un grafo.
+    Utiliza un algoritmo de selección de nodos basado en el grado de los nodos, seleccionando siempre el nodo de mayor grado disponible.
     
-
-
-
-
-def solve(edges):
+    Parámetros:
+    edges (list): Una lista de aristas del grafo, representadas como tuplas de dos enteros.
+    
+    Retorna:
+    list: Un conjunto de nodos que cubren todas las aristas del grafo.
+    """
     neighs={}
 
     #ordernar cordenadas de los edges para representacion canonica
