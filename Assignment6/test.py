@@ -2,7 +2,6 @@ import random
 import time
 import pandas as pd
 from eje1 import solve as solve1
-from eje2_buckets import solve as solve2_buckets
 from eje2 import solve as solve2
 from eje3 import solve as solve3
 from eje4 import solve as solve4
@@ -29,7 +28,7 @@ def probar_algoritmos():
 
     algoritmos = [
         ("Alg.1", solve1),
-        ("Alg.2", solve2_buckets),
+        ("Alg.2", solve2),
         ("Alg.3", solve3),
         ("Alg.4", solve4)
     ]
