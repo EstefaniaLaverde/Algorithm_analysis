@@ -1,5 +1,7 @@
 import sys
 import my_vf2pp
+import networkx as nx
+
 
 def read_graph(path):
     with open(path) as f:
@@ -18,7 +20,7 @@ def read_graph(path):
             edges.append(line)
             line=f.readline()
 
-    return list(range(n_nodes)),edges,[0 for i in range(n_nodes)]
+    return list(range(n_nodes)),edges,{i:0 for i in range(n_nodes)}
 
 
 
@@ -31,3 +33,15 @@ if __name__=='__main__':
     G=my_vf2pp.graph(*read_graph(path_G))
 
     print(my_vf2pp.vf2pp(S,G))
+
+    S_nx=nx.Graph()
+    S_nx.add_edges_from(S.edges)
+
+    G_nx=nx.Graph()
+    G_nx.add_edges_from(G.edges)
+
+    G_M=nx.algorithms.isomorphism.GraphMatcher(G_nx,S_nx)
+    print(G_M.subgraph_is_isomorphic())
+
+
+    
