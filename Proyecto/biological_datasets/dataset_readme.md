@@ -1,0 +1,1 @@
+MUTAG is a dataset that you can download from PyTorch Geometric. It contains 188 graphs representing molecules where the nodes are atoms (C, N, O, F, I, Cl, or Br) and the undirected edges are bonds (aromatic, single, double, or triple). Each graph comes with a target value of either 1 indicating mutagenicity (causing genetic mutation) or 0, meaning no mutagenicity. 

@@ -4,6 +4,7 @@ import itertools
 class graph:
 
     def __init__(self,nodes,edges,labels):
+        self.edges = edges
         self.nodes=set(nodes)
         self.neighs={node:set() for node in nodes}
         self.labels=labels

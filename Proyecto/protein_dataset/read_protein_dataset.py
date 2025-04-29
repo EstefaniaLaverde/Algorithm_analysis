@@ -26,5 +26,5 @@ def load_protein_dataset(data_path):
     print("Graphs loaded:", len(graphs))
     print("First graph:", graphs[1])
 
-    return graphs
+    return graphs[1:]
         
