@@ -1,25 +1,30 @@
-with open('truncated_dataset.txt', 'r') as file:
-    lines = file.readlines()
 
-graphs = []
-edges = []
-labels = {}
-for line in lines:
-    if line.startswith('v'):
-        _, node, label = line.split()
-        node = int(node)
-        if node not in labels:
-            labels[node] = int(label)
+def load_protein_dataset(data_path):
 
-    elif line.startswith('e'):
-        _, node1, node2, _ = line.split()
-        edges.append((int(node1), int(node2)))
+    with open(data_path, 'r') as file:
+        lines = file.readlines()
 
-    else:
-        graphs.append([edges, labels])
-        edges = []
-        labels = {}
+    graphs = []
+    edges = []
+    labels = {}
+    for line in lines:
+        if line.startswith('v'):
+            _, node, label = line.split()
+            node = int(node)
+            if node not in labels:
+                labels[node] = int(label)
 
-print("Graphs loaded:", len(graphs))
-print("First graph:", graphs[1])
+        elif line.startswith('e'):
+            _, node1, node2, _ = line.split()
+            edges.append((int(node1), int(node2)))
+
+        else:
+            graphs.append([edges, labels])
+            edges = []
+            labels = {}
+
+    print("Graphs loaded:", len(graphs))
+    print("First graph:", graphs[1])
+
+    return graphs
         
