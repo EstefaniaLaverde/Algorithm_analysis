@@ -116,6 +116,17 @@ class graph:
                 ans.add(neigh)
         return ans
 
+    #funcion de eliminar nodos
+    def erase_node(self,u):
+        if u in self.nodes:
+            self.labels.pop(u)
+            for v in self.neighs[u]:
+                self.neighs[v].remove(u)
+            self.neighs.pop(u)
+            self.nodes.remove(u)
+        
+
+
 
 #funciones auxiliares para sacar arg min y composicion de funciones para sacar el matching order
 
@@ -208,6 +219,15 @@ def check_extension_cut(u,v,f,S,G):
 
 def vf2pp(S,G):
     f={}
+
+    S_label_set=set(S.labels.values())
+    nodes_to_erase=[]
+    for u in G.nodes:
+        if G.labels[u] not in S_label_set:
+            nodes_to_erase.append(u)
+    
+    for u in nodes_to_erase:
+        G.erase_node(u)
 
     G_l_counts=G.get_l_counts()
     
