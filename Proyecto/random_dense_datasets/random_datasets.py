@@ -28,9 +28,9 @@ def generate(n,m):
 
 
 if __name__=='__main__':
-    n_samples=50
-    min_n=10
-    max_n=30
+    n_samples=10
+    min_n=9
+    max_n=11
     min_density=1.5
     max_density=2
 

@@ -1,4 +1,6 @@
 
+from protein_dataset.read_protein_dataset import load_protein_dataset
+
 import networkx as nx
 import my_vf2pp
 import algoritmo_genetico
@@ -15,32 +17,19 @@ import itertools
 
 from copy import deepcopy
 
-import random
+import json
 
-def generate_edge(n):
-    u=random.randrange(0,n)
-    v=random.randrange(0,n)
+with open('random_dense_datasets/random_datasets_015.json') as f:
+    graphs=json.load(f)
 
-    while v==u:
-        v=random.randrange(0,n)
+for i in range(len(graphs)):
+    g_labels=graphs[i][1].copy()
+    for k,v in graphs[i][1].items():
+        g_labels[int(k)]=v
+    graphs[i][1]=g_labels
 
-    return tuple(sorted((u,v)))
 
-
-def generate(n,m):
-    m=min(m,(n*(n-1))//2)
-
-    used_edges=set()
-
-    for i in range(m):
-        edge=generate_edge(n)
-        while edge in used_edges:
-            edge=generate_edge(n)
-        used_edges.add(edge)
-
-        
-    return list(used_edges)
-
+# graphs = load_protein_dataset('biological_datasets/truncated_mutag.txt')
 
 datos=pd.DataFrame(columns=['algorithm','S_n_nodes','S_n_edges','G_n_nodes','G_n_edges','time','found_mapping'])
 
@@ -48,57 +37,42 @@ times_vf2pp_nx = []
 times_vf2pp = []
 times_backtracking = []
 
-n_attemps=50
-max_n=17
-
 # print(graphs)
-for attemp in range(n_attemps):
-    print(attemp)
-
+for S,G in itertools.permutations(graphs,2):
     # print('label values are subset',set(S[1].values()).issubset(set(G[1].values())))
     # print('S valid nodes',set(itertools.chain.from_iterable(S[0]))==set(S[1].keys()))
     # print('G valid nodes',set(itertools.chain.from_iterable(G[0]))==set(G[1].keys()))
 
-    n_S=random.randint(3,max_n)
-    m_S=random.randint(3,(n_S*(n_S-1))//2)
-
-    n_G=random.randint(n_S,max_n)
-    m_G=random.randint(3,(n_G*(n_G-1))//2)
-
-    S=[generate(n_S,m_S),{i:0 for i in range(n_S)}]
-    G=[generate(n_G,m_G),{i:0 for i in range(n_G)}]
-
-    print('generated')
-    print(len(S[0]),len(S[1]))
-    print(len(G[0]),len(G[1]))
-
     #-------------------------------
     #sacar datos de networkx
 
-    start=time.time()
-    S_nx=nx.Graph()
-    S_nx.add_edges_from(S[0])
+    try:
+        start=time.time()
+        S_nx=nx.Graph()
+        S_nx.add_edges_from(S[0])
 
-    G_nx=nx.Graph()
-    G_nx.add_edges_from(G[0])
+        G_nx=nx.Graph()
+        G_nx.add_edges_from(G[0])
 
-    #toca hacer algo para poder meterle labels a networkx
+        #toca hacer algo para poder meterle labels a networkx
 
-    GM=nx.algorithms.isomorphism.GraphMatcher(G_nx,S_nx)
-    ans=GM.subgraph_is_isomorphic()
-    # ansnx = None
-    # if ans == True:
-    #     ansnx = ans
-    #     mapping = GM.mapping
-    #     print('G',G)
-    #     print('S',S)
+        GM=nx.algorithms.isomorphism.GraphMatcher(G_nx,S_nx)
+        ans=GM.subgraph_is_isomorphic()
+        # ansnx = None
+        # if ans == True:
+        #     ansnx = ans
+        #     mapping = GM.mapping
+        #     print('G',G)
+        #     print('S',S)
 
-    end=time.time()
-    resultados=pd.DataFrame([['nx_vf2++',len(S[1]),len(S[0]),len(G[1]),len(G[0]),end-start,ans]],columns=datos.columns)
-    times_vf2pp_nx.append(end-start)
-    datos=pd.concat((datos,resultados),ignore_index=True)
-    
-    print('networkx')
+        end=time.time()
+        resultados=pd.DataFrame([['nx_vf2++',len(S[1]),len(S[0]),len(G[1]),len(G[0]),end-start,ans]],columns=datos.columns)
+        times_vf2pp_nx.append(end-start)
+        datos=pd.concat((datos,resultados),ignore_index=True)
+    except:
+        pass
+
+    #print('nx')
     #---------------------------------------------
     #sacar datos de my_vf2pp
     start=time.time()
@@ -113,22 +87,20 @@ for attemp in range(n_attemps):
     datos=pd.concat((datos,resultados),ignore_index=True)
     times_vf2pp.append(end-start)
 
-    print('my_vf2pp')
-    #-------------------------------------------
+    #print('my_vf22')
 
     #sacar datos de backtracking y fingerprints
     start = time.time()
     G_own=my_vf2pp.graph(list(G[1].keys()),G[0],G[1])
     S_own=my_vf2pp.graph(list(S[1].keys()),S[0],S[1])
-    solver = backtracking_y_fingerprint.BacktrackingFingerprintIsomorphismSolver(S_own, G_own)
-    ans = solver.calcular_isomorfismo_backtracking()
+    solver = backtracking_y_fingerprint.BacktrackingFingerprintSolver(S_own, G_own)
+    ans = solver.compute_isomorphism_backtracking()
     end = time.time()
     resultados=pd.DataFrame([['fingerprints and backtracking',len(S[1]),len(S[0]),len(G[1]),len(G[0]),end-start,ans != {}]],columns=datos.columns)
     datos=pd.concat((datos,resultados),ignore_index=True)
     times_backtracking.append(end-start)
 
-    print('backtrack finger')
-
+    #print('backtrack fingerprint')
 
 
 print(datos.to_markdown())
