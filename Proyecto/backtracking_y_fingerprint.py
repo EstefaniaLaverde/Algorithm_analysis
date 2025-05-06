@@ -10,7 +10,7 @@ class BacktrackingFingerprintSolver:
         """
         self.S = S
         self.G = G
-        self.recurssion_count = 0
+        self.recurssion_count = 0 
 
         # Compute fingerprints for both graphs - obtain self.fingerprint_S and self.fingerprint_G
         self.build_fingerprint_map()
