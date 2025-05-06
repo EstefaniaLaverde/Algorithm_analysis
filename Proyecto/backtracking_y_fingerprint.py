@@ -10,6 +10,7 @@ class BacktrackingFingerprintSolver:
         """
         self.S = S
         self.G = G
+        self.recurssion_count = 0
 
         # Compute fingerprints for both graphs - obtain self.fingerprint_S and self.fingerprint_G
         self.build_fingerprint_map()
@@ -104,6 +105,9 @@ class BacktrackingFingerprintSolver:
                     nivel_profundidad: int - current depth level in the backtracking search. Default is 0.
             outputs: dict - mapping of nodes from S to G if an isomorphism is found, otherwise an empty dictionary.
         """
+        #count the number of recurssions
+        self.recurssion_count += 1
+
         if mapping is None:
             mapping = {}
 
@@ -219,8 +223,8 @@ if __name__ == "__main__":
               edges=S_params[0],
               labels=S_params[1])
     
-    graficar_grafo(S)
-    graficar_grafo(G)
+    # graficar_grafo(S)
+    # graficar_grafo(G)
 
     solver = BacktrackingFingerprintSolver(S, G)
     print('Labels de S:', S.labels)
@@ -231,6 +235,8 @@ if __name__ == "__main__":
     
     if mapeo:
         print(f"Isomorfismo encontrado. Mapeo: {mapeo}")
-        solver.graficar_mapeo(mapeo)
+        # solver.graficar_mapeo(mapeo)
     else:
         print("No se encontró isomorfismo.")
+
+    print('El número de llamadas a recursion fue:',solver.recurssion_count)
