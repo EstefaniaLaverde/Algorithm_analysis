@@ -20,7 +20,7 @@ import time
 graphs = load_protein_dataset('protein_dataset/truncated_dataset.txt')
 
 # Define dataframe
-datos=pd.DataFrame(columns=['algorithm','S_n_nodes','S_n_edges','G_n_nodes','G_n_edges','time', 'memory_usage_peak','found_mapping'])
+datos=pd.DataFrame(columns=['algorithm','S_n_nodes','S_n_edges','G_n_nodes','G_n_edges','time', 'memory_usage_peak', 'recursive_calls','found_mapping'])
 
 # Save times to plot
 times_vf2pp_nx = []
@@ -30,6 +30,7 @@ times_backtracking = []
 # Start iteration using two 
 i = 0
 for S,G in itertools.permutations(graphs,2):
+    print(i)
     # Check validity of graphs - if S has more vertices than G continue
     if len(list(S[1].keys())) > len(list(S[1].keys())):
         continue
@@ -66,7 +67,7 @@ for S,G in itertools.permutations(graphs,2):
         current, peak = tracemalloc.get_traced_memory()
 
         # Guardar resultados
-        resultados = pd.DataFrame([['nx_vf2', len(S[1]), len(S[0]), len(G[1]), len(G[0]), end - start, peak, ans]], columns=datos.columns)
+        resultados = pd.DataFrame([['nx_vf2', len(S[1]), len(S[0]), len(G[1]), len(G[0]), end - start, peak, 'NA', ans]], columns=datos.columns)
         times_vf2pp_nx.append(end - start)
         datos = pd.concat((datos, resultados), ignore_index=True)
         tracemalloc.stop()
@@ -83,8 +84,9 @@ for S,G in itertools.permutations(graphs,2):
     ans=(len(my_vf2pp.vf2pp(S_own,G_own))==len(S_own.nodes))
 
     end=time.time()
+    recursive_calls = my_vf2pp.exec_record['recu_calls']
     current, peak = tracemalloc.get_traced_memory()
-    resultados=pd.DataFrame([['our_vf2++',len(S[1]),len(S[0]),len(G[1]),len(G[0]),end-start,peak, ans]],columns=datos.columns)
+    resultados=pd.DataFrame([['our_vf2++',len(S[1]),len(S[0]),len(G[1]),len(G[0]),end-start,peak, recursive_calls, ans]],columns=datos.columns)
     tracemalloc.stop()
 
     datos=pd.concat((datos,resultados),ignore_index=True)
@@ -99,8 +101,9 @@ for S,G in itertools.permutations(graphs,2):
     solver = backtracking_y_fingerprint.BacktrackingFingerprintSolver(S_own, G_own)
     ans = solver.compute_isomorphism_backtracking()
     end = time.time()
+    recursive_calls = solver.recurssion_count
     current, peak = tracemalloc.get_traced_memory()
-    resultados=pd.DataFrame([['fingerprints and backtracking',len(S[1]),len(S[0]),len(G[1]),len(G[0]),end-start, peak, ans != {}]],columns=datos.columns)
+    resultados=pd.DataFrame([['fingerprints and backtracking',len(S[1]),len(S[0]),len(G[1]),len(G[0]),end-start, peak, recursive_calls, ans != {}]],columns=datos.columns)
     datos=pd.concat((datos,resultados),ignore_index=True)
     times_backtracking.append(end-start)
     tracemalloc.stop()
@@ -109,7 +112,7 @@ for S,G in itertools.permutations(graphs,2):
 
 #####################
 # Save dataset
-datos.to_excel('results/all_results_protein.xlsx')
+datos.to_excel('results/all_results_PROTEINS_500.xlsx')
 
 ###################### statistics by algorithm
 grouped = datos.groupby('algorithm')
@@ -128,10 +131,25 @@ stats = grouped.agg(
     mapping_found_rate=('found_mapping', lambda x: x.mean() * 100)
 ).reset_index()
 
-# Save statistics in excel
-stats.to_excel('results/results_protein_comparisson_stats.xlsx')
+recursive_algorithms = ['fingerprints and backtracking', 'our_vf2++']
+recursive_stats = (
+    datos[datos['algorithm'].isin(recursive_algorithms)]
+    .groupby('algorithm')
+    .agg(
+        recursive_calls_mean=('recursive_calls', 'mean'),
+        recursive_calls_std=('recursive_calls', 'std'),
+        recursive_calls_min=('recursive_calls', 'min'),
+        recursive_calls_max=('recursive_calls', 'max')
+    )
+    .reset_index()
+)
 
-print(stats.to_markdown())
+final_stats = pd.merge(stats, recursive_stats, on='algorithm', how='left')
+
+# Save statistics in excel
+final_stats.to_excel('results/results_500_PROTEIN_comparisson_stats.xlsx')
+
+print(final_stats.to_markdown())
 #########################################
 
 
@@ -142,7 +160,7 @@ import matplotlib.pyplot as plt
 # Crear DataFrame
 data = pd.DataFrame({
     "Tiempo (s)": times_vf2pp_nx + times_vf2pp + times_backtracking,
-    "Algoritmo": ["VF2++ NetworkX"]*len(times_vf2pp_nx) + 
+    "Algoritmo": ["VF2 NetworkX"]*len(times_vf2pp_nx) + 
                  ["VF2++ Personalizado"]*len(times_vf2pp) + 
                  ["Backtracking"]*len(times_backtracking),
     "Ejecución": list(range(len(times_vf2pp_nx))) + 
