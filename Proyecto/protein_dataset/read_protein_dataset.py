@@ -4,6 +4,7 @@ def load_protein_dataset(data_path):
     with open(data_path, 'r') as file:
         lines = file.readlines()
 
+    i = 0
     graphs = []
     edges = []
     labels = {}
@@ -20,11 +21,14 @@ def load_protein_dataset(data_path):
 
         else:
             graphs.append([edges, labels])
+            # print(F'ADDING GRAPH {i}')
+            if i == 6:
+                print([edges, labels])
             edges = []
             labels = {}
+            i+= 1
 
-    print("Graphs loaded:", len(graphs))
-    print("First graph:", graphs[1])
-
+    # print("Graphs loaded:", len(graphs))
+    # print("First graph:", graphs[1])
     return graphs[1:]
         
