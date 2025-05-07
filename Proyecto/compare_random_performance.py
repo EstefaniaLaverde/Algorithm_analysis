@@ -1,80 +1,88 @@
-
+# Read dataset
 from protein_dataset.read_protein_dataset import load_protein_dataset
-
+# Networkx vf2 algorithm
+from networkx.algorithms import isomorphism
 import networkx as nx
+
+# vf2++ implementation
 import my_vf2pp
-import algoritmo_genetico
-import vf2pp_fingerprints
+
+# Proposed algorithm
 import backtracking_y_fingerprint
 
-from backtracking_y_fingerprint import graficar_grafo
-
-import time
-
+# Other libraries
 import pandas as pd
-
+import tracemalloc
 import itertools
-
-from copy import deepcopy
-
+import time
 import json
 
 with open('random_dense_datasets/random_datasets_015.json') as f:
     graphs=json.load(f)
 
 for i in range(len(graphs)):
-    g_labels=graphs[i][1].copy()
+    g_labels={}
     for k,v in graphs[i][1].items():
         g_labels[int(k)]=v
     graphs[i][1]=g_labels
 
+# Define dataframe
+datos=pd.DataFrame(columns=['algorithm','S_n_nodes','S_n_edges','G_n_nodes','G_n_edges','time', 'memory_usage_peak','found_mapping'])
 
-# graphs = load_protein_dataset('biological_datasets/truncated_mutag.txt')
-
-datos=pd.DataFrame(columns=['algorithm','S_n_nodes','S_n_edges','G_n_nodes','G_n_edges','time','found_mapping'])
-
+# Save times to plot
 times_vf2pp_nx = []
 times_vf2pp = []
 times_backtracking = []
 
-# print(graphs)
+# Start iteration using two 
+i = 0
 for S,G in itertools.permutations(graphs,2):
-    # print('label values are subset',set(S[1].values()).issubset(set(G[1].values())))
-    # print('S valid nodes',set(itertools.chain.from_iterable(S[0]))==set(S[1].keys()))
-    # print('G valid nodes',set(itertools.chain.from_iterable(G[0]))==set(G[1].keys()))
+    # Check validity of graphs - if S has more vertices than G continue
+    if len(list(S[1].keys())) > len(list(S[1].keys())):
+        continue
+
+    # Compute only 500 results
+    if i == 500: break
 
     #-------------------------------
-    #sacar datos de networkx
-
+    #networkx data - this uses vf2
     try:
-        start=time.time()
-        S_nx=nx.Graph()
+        tracemalloc.start()
+        start = time.time()
+
+        # Crear grafos
+        S_nx = nx.Graph()
         S_nx.add_edges_from(S[0])
+        for node, label in S[1].items():
+            S_nx.nodes[node]['label'] = label
 
-        G_nx=nx.Graph()
+        G_nx = nx.Graph()
         G_nx.add_edges_from(G[0])
+        for node, label in G[1].items():
+            G_nx.nodes[node]['label'] = label
 
-        #toca hacer algo para poder meterle labels a networkx
+        # Comparador de nodos por label
+        node_match = isomorphism.categorical_node_match('label', None)
 
-        GM=nx.algorithms.isomorphism.GraphMatcher(G_nx,S_nx)
-        ans=GM.subgraph_is_isomorphic()
-        # ansnx = None
-        # if ans == True:
-        #     ansnx = ans
-        #     mapping = GM.mapping
-        #     print('G',G)
-        #     print('S',S)
+        # Búsqueda de subgrafo isomorfo
+        GM = nx.algorithms.isomorphism.GraphMatcher(G_nx, S_nx, node_match=node_match)
+        ans = GM.subgraph_is_isomorphic()
 
-        end=time.time()
-        resultados=pd.DataFrame([['nx_vf2++',len(S[1]),len(S[0]),len(G[1]),len(G[0]),end-start,ans]],columns=datos.columns)
-        times_vf2pp_nx.append(end-start)
-        datos=pd.concat((datos,resultados),ignore_index=True)
+
+        end = time.time()
+        current, peak = tracemalloc.get_traced_memory()
+
+        # Guardar resultados
+        resultados = pd.DataFrame([['nx_vf2', len(S[1]), len(S[0]), len(G[1]), len(G[0]), end - start, peak, ans]], columns=datos.columns)
+        times_vf2pp_nx.append(end - start)
+        datos = pd.concat((datos, resultados), ignore_index=True)
+        tracemalloc.stop()
     except:
         pass
 
-    #print('nx')
     #---------------------------------------------
-    #sacar datos de my_vf2pp
+    # sacar datos de my_vf2pp
+    tracemalloc.start()
     start=time.time()
     G_own=my_vf2pp.graph(list(G[1].keys()),G[0],G[1])
     S_own=my_vf2pp.graph(list(S[1].keys()),S[0],S[1])
@@ -82,28 +90,57 @@ for S,G in itertools.permutations(graphs,2):
     ans=(len(my_vf2pp.vf2pp(S_own,G_own))==len(S_own.nodes))
 
     end=time.time()
-    resultados=pd.DataFrame([['our_vf2++',len(S[1]),len(S[0]),len(G[1]),len(G[0]),end-start,ans]],columns=datos.columns)
+    current, peak = tracemalloc.get_traced_memory()
+    resultados=pd.DataFrame([['our_vf2++',len(S[1]),len(S[0]),len(G[1]),len(G[0]),end-start,peak, ans]],columns=datos.columns)
+    tracemalloc.stop()
 
     datos=pd.concat((datos,resultados),ignore_index=True)
     times_vf2pp.append(end-start)
 
-    #print('my_vf22')
-
+    #-----------------------
     #sacar datos de backtracking y fingerprints
+    tracemalloc.start()
     start = time.time()
     G_own=my_vf2pp.graph(list(G[1].keys()),G[0],G[1])
     S_own=my_vf2pp.graph(list(S[1].keys()),S[0],S[1])
     solver = backtracking_y_fingerprint.BacktrackingFingerprintSolver(S_own, G_own)
     ans = solver.compute_isomorphism_backtracking()
     end = time.time()
-    resultados=pd.DataFrame([['fingerprints and backtracking',len(S[1]),len(S[0]),len(G[1]),len(G[0]),end-start,ans != {}]],columns=datos.columns)
+    current, peak = tracemalloc.get_traced_memory()
+    resultados=pd.DataFrame([['fingerprints and backtracking',len(S[1]),len(S[0]),len(G[1]),len(G[0]),end-start, peak, ans != {}]],columns=datos.columns)
     datos=pd.concat((datos,resultados),ignore_index=True)
     times_backtracking.append(end-start)
+    tracemalloc.stop()
 
-    #print('backtrack fingerprint')
+    i+=1
 
+#####################
+# Save dataset
+datos.to_excel('results/all_results_random.xlsx')
 
-print(datos.to_markdown())
+###################### statistics by algorithm
+grouped = datos.groupby('algorithm')
+
+# Compute statistics
+stats = grouped.agg(
+    time_mean=('time', 'mean'),
+    time_median=('time', 'median'),
+    time_std=('time', 'std'),
+    time_min=('time', 'min'),
+    time_max=('time', 'max'),
+    memory_mean=('memory_usage_peak', 'mean'),
+    memory_std=('memory_usage_peak', 'std'),
+    memory_min=('memory_usage_peak', 'min'),
+    memory_max=('memory_usage_peak', 'max'),
+    mapping_found_rate=('found_mapping', lambda x: x.mean() * 100)
+).reset_index()
+
+# Save statistics in excel
+stats.to_excel('results/results_random_comparisson_stats.xlsx')
+
+print(stats.to_markdown())
+#########################################
+
 
 import pandas as pd
 import seaborn as sns
