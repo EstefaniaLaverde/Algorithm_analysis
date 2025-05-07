@@ -31,8 +31,8 @@ if __name__=='__main__':
     n_samples=10
     min_n=9
     max_n=11
-    min_density=1.5
-    max_density=2
+    min_density=0.97
+    max_density=1
 
 
     save_path='random_dense_datasets/random_datasets_015.json'
@@ -41,8 +41,8 @@ if __name__=='__main__':
     for i in range(n_samples):
         n=random.randint(min_n,max_n)
 
-        m=n**random.uniform(min_density,max_density)
-        m=round(m)
+        n_pow=n**random.uniform(min_density,max_density)
+        m=round(n_pow*(n_pow-1)/2)
 
         G=generate(n,m)
 
