@@ -1,0 +1,15 @@
+# Commands
+Alt+s mark as started
+Alt+d mark as done
+Alt+enter create box
+
+# Assignment 6
+✔ Ejercicio 2 @started(25-03-29 22:29) @done(25-03-29 23:41) @lasted(1h12m21s)
+✔ Ejercicio 3 @started(25-03-29 23:54) @done(25-03-30 00:09) @lasted(15m59s)
+✔ Cambiar forma de tomar el maximo grado en ej 2 @started(25-04-04 11:44) @done(25-04-04 12:37) @lasted(53m14s)
+
+# Proyecto
+✔ Descripción del proyecto (precondiciones y postcondiciones) @started(25-04-26 17:30) @done(25-04-26 18:30) @lasted(1h38s)
+✔ Lectura de proteinas como grafos @started(25-04-28 16:55) @done(25-04-28 20:12) @lasted(3h17m54s)
+✔ Flow diagram @started(25-04-30 16:49) @done(25-04-30 17:43) @lasted(54m43s)
+✔ Organize code @started(25-05-02 17:05) @done(25-05-02 17:52) @lasted(47m15s)

@@ -1,5 +1,5 @@
 # Read dataset
-from biological_datasets.read_dataset import read_and_process_dataset
+from mutag_dataset.read_dataset import read_and_process_dataset
 
 # Networkx vf2 algorithm
 from networkx.algorithms import isomorphism

@@ -1,9 +1,11 @@
 # searching NO2 isomorphisms in the biological dataset
-from backtracking_y_fingerprint import BacktrackingFingerprintIsomorphismSolver, graficar_grafo
+from backtracking_y_fingerprint import BacktrackingFingerprintSolver, graficar_grafo
 from my_vf2pp import vf2pp
 import biological_datasets.read_dataset as rd
 from my_vf2pp import graph as grp
 import time
+from itertools import combinations
+from tqdm import tqdm
 
 G_graphs = rd.read_and_process_dataset('biological_datasets/mutag.txt')
 
@@ -14,20 +16,23 @@ for graph in G_graphs:
                     labels = graph[1])  
     Gs.append(G)
 
-S_graph = rd.read_and_process_dataset('biological_datasets/pattern.txt')[0]
-S = grp(nodes=list(S_graph[1].keys()),
-                    edges = S_graph[0],
-                    labels = S_graph[1])
+# Generate combinations of graphs
+graph_pairs = list(combinations(Gs, 2))
+print('Numero de pares:', len(graph_pairs))
+graph_pairs = graph_pairs[:100]
 
+graphs_with_isomorphism = []
 isomorphisms_backtracking = []
 isomorphisms_vf2pp = []
 times_backtracking = []
 times_vf2pp = []
 
-for i, G in enumerate(Gs):
+for i, (S, G) in tqdm(enumerate(graph_pairs), total=len(graph_pairs), desc="Processing graph pairs"):
+    # graficar_grafo(S)
+    # graficar_grafo(G)
     start_time = time.time()
-    solver = BacktrackingFingerprintIsomorphismSolver(S, G)
-    mapping = solver.calcular_isomorfismo_backtracking()
+    solver = BacktrackingFingerprintSolver(S, G)
+    mapping = solver.compute_isomorphism_backtracking()
     isomorphisms_backtracking.append(mapping)
     end_time = time.time()
     times_backtracking.append(end_time - start_time)
@@ -36,6 +41,9 @@ for i, G in enumerate(Gs):
     isomorphisms_vf2pp.append(vf2pp(S, G))
     end_time = time.time()
     times_vf2pp.append(end_time - start_time)
+
+    if mapping != {}:
+        graphs_with_isomorphism.append((S,G))
         
 
 print("Isomorphisms found backtracking:", len([mapping for mapping in isomorphisms_backtracking if mapping != {}]))
@@ -72,3 +80,4 @@ plt.legend(title="Method")
 
 # Mostrar la gráfica
 plt.show()
+

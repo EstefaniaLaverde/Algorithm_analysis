@@ -51,12 +51,13 @@ class BacktrackingFingerprintSolver:
         calcular_suma_de_cuadrados_grados_vecinos = lambda G, node: sum(G.deg(neigh)**2 for neigh in G.neighs[node])
 
         # Final fingerprint
-        fingerprints_S = {node:(compute_degree(self.S, node), compute_sum_degrees_neighs(self.S, node), get_num_adjacent_triangles(self.S, node), calcular_suma_de_cuadrados_grados_vecinos(self.S, node)) for node in self.S.nodes}
-        fingerprints_G = {node:(compute_degree(self.G, node), compute_sum_degrees_neighs(self.G, node), get_num_adjacent_triangles(self.G, node), calcular_suma_de_cuadrados_grados_vecinos(self.G, node)) for node in self.G.nodes}
+        fingerprints_S = {node:(compute_degree(self.S, node), compute_sum_degrees_neighs(self.S, node), get_num_adjacent_triangles(self.S, node)) for node in self.S.nodes}
+        fingerprints_G = {node:(compute_degree(self.G, node), compute_sum_degrees_neighs(self.G, node), get_num_adjacent_triangles(self.G, node)) for node in self.G.nodes}
+        
 
         # Other fingerprint options:
-        # fingerprints_S = {node:(calcular_grados(self.S, node), calcular_grados_vecinos(self.S, node), get_num_adjacent_triangles(self.S, node)) for node in self.S.nodes}
-        # fingerprints_G = {node:(calcular_grados(self.G, node), calcular_grados_vecinos(self.G, node), get_num_adjacent_triangles(self.G, node)) for node in self.G.nodes}
+        # fingerprints_S = {node:(compute_degree(self.S, node), compute_sum_degrees_neighs(self.S, node), get_num_adjacent_triangles(self.S, node), calcular_suma_de_cuadrados_grados_vecinos(self.S, node)) for node in self.S.nodes}
+        # fingerprints_G = {node:(compute_degree(self.G, node), compute_sum_degrees_neighs(self.G, node), get_num_adjacent_triangles(self.G, node), calcular_suma_de_cuadrados_grados_vecinos(self.G, node)) for node in self.G.nodes}
 
         # fingerprints_S = {node:(compute_degree(self.S, node),) for node in self.S.nodes}
         # fingerprints_G = {node:(compute_degree(self.G, node),) for node in self.G.nodes}
@@ -216,8 +217,11 @@ if __name__ == "__main__":
 
     tracemalloc.start()
 
-    G_params = [[(119, 118), (118, 119), (120, 119), (119, 120), (121, 119), (119, 121), (122, 121), (121, 122), (123, 122), (122, 123), (124, 123), (123, 124), (125, 124), (124, 125), (126, 125), (125, 126), (127, 126), (126, 127), (127, 122), (122, 127), (128, 126), (126, 128), (129, 128), (128, 129), (130, 129), (129, 130), (130, 125), (125, 130), (131, 130), (130, 131), (132, 131), (131, 132), (133, 132), (132, 133), (134, 133), (133, 134), (134, 129), (129, 134), (135, 133), (133, 135), (136, 135), (135, 136), (137, 135), (135, 137)], {118: 0, 119: 0, 120: 2, 121: 2, 122: 0, 123: 0, 124: 0, 125: 0, 126: 0, 127: 0, 128: 0, 129: 0, 130: 0, 131: 0, 132: 0, 133: 0, 134: 0, 135: 1, 136: 2, 137: 2}]
-    S_params = [[(152, 151), (151, 152), (153, 152), (152, 153), (154, 153), (153, 154), (155, 154), (154, 155), (156, 155), (155, 156), (156, 151), (151, 156), (157, 155), (155, 157), (158, 157), (157, 158), (159, 158), (158, 159), (159, 154), (154, 159), (160, 159), (159, 160), (161, 160), (160, 161), (162, 161), (161, 162), (163, 162), (162, 163), (163, 158), (158, 163), (164, 162), (162, 164), (165, 164), (164, 165), (166, 164), (164, 166)], { 151: 0, 152: 0, 153: 0, 154: 0, 155: 0, 156: 0, 157: 0, 158: 0, 159: 0, 160: 0, 161: 0, 162: 0, 163: 0, 164: 1, 165: 2, 166: 2}]
+    # G_params = [[(119, 118), (118, 119), (120, 119), (119, 120), (121, 119), (119, 121), (122, 121), (121, 122), (123, 122), (122, 123), (124, 123), (123, 124), (125, 124), (124, 125), (126, 125), (125, 126), (127, 126), (126, 127), (127, 122), (122, 127), (128, 126), (126, 128), (129, 128), (128, 129), (130, 129), (129, 130), (130, 125), (125, 130), (131, 130), (130, 131), (132, 131), (131, 132), (133, 132), (132, 133), (134, 133), (133, 134), (134, 129), (129, 134), (135, 133), (133, 135), (136, 135), (135, 136), (137, 135), (135, 137)], {118: 0, 119: 0, 120: 2, 121: 2, 122: 0, 123: 0, 124: 0, 125: 0, 126: 0, 127: 0, 128: 0, 129: 0, 130: 0, 131: 0, 132: 0, 133: 0, 134: 0, 135: 1, 136: 2, 137: 2}]
+    # S_params = [[(152, 151), (151, 152), (153, 152), (152, 153), (154, 153), (153, 154), (155, 154), (154, 155), (156, 155), (155, 156), (156, 151), (151, 156), (157, 155), (155, 157), (158, 157), (157, 158), (159, 158), (158, 159), (159, 154), (154, 159), (160, 159), (159, 160), (161, 160), (160, 161), (162, 161), (161, 162), (163, 162), (162, 163), (163, 158), (158, 163), (164, 162), (162, 164), (165, 164), (164, 165), (166, 164), (164, 166)], { 151: 0, 152: 0, 153: 0, 154: 0, 155: 0, 156: 0, 157: 0, 158: 0, 159: 0, 160: 0, 161: 0, 162: 0, 163: 0, 164: 1, 165: 2, 166: 2}]
+
+    S_params = [[[3, 4], [4, 9], [3, 7], [5, 7], [0, 2], [8, 9], [0, 5], [1, 6], [0, 8], [2, 5], [1, 3], [1, 9], [2, 8], [6, 8], [4, 5], [3, 9], [5, 6], [4, 8], [3, 6], [5, 9], [0, 1], [0, 7], [2, 4], [1, 2], [0, 4], [1, 5], [1, 8], [7, 9], [6, 7], [4, 7], [3, 5], [3, 8], [0, 3], [0, 9], [1, 4], [0, 6], [2, 3], [2, 9], [1, 7], [2, 6], [6, 9], [7, 8]], {0: 0, 1: 0, 2: 0, 3: 0, 4: 0, 5: 0, 6: 0, 7: 0, 8: 0, 9: 0}]
+    G_params = [[[3, 4], [4, 9], [3, 7], [4, 6], [5, 7], [0, 2], [8, 9], [0, 5], [1, 6], [0, 8], [2, 5], [1, 3], [1, 9], [2, 8], [6, 8], [4, 5], [3, 9], [5, 6], [4, 8], [3, 6], [5, 9], [0, 1], [0, 7], [2, 4], [1, 2], [0, 4], [2, 7], [1, 5], [1, 8], [7, 9], [6, 7], [4, 7], [3, 5], [3, 8], [5, 8], [0, 9], [1, 4], [0, 6], [2, 3], [2, 9], [1, 7], [2, 6], [6, 9], [7, 8]], {0: 0, 1: 0, 2: 0, 3: 0, 4: 0, 5: 0, 6: 0, 7: 0, 8: 0, 9: 0}]
 
     G = graph(nodes=G_params[1].keys(),
               edges=G_params[0],
@@ -226,8 +230,8 @@ if __name__ == "__main__":
               edges=S_params[0],
               labels=S_params[1])
     
-    # graficar_grafo(S)
-    # graficar_grafo(G)
+    graficar_grafo(S)
+    graficar_grafo(G)
 
     solver = BacktrackingFingerprintSolver(S, G)
     print('Labels de S:', S.labels)
@@ -238,7 +242,7 @@ if __name__ == "__main__":
     
     if mapeo:
         print(f"Isomorfismo encontrado. Mapeo: {mapeo}")
-        # solver.graficar_mapeo(mapeo)
+        solver.graficar_mapeo(mapeo)
     else:
         print("No se encontró isomorfismo.")
 
