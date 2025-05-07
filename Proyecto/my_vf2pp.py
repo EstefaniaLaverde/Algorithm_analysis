@@ -217,9 +217,13 @@ def check_extension_cut(u,v,f,S,G):
     return False
     
 
+exec_record={}
+
 
 def vf2pp(S,G):
     f={}
+
+    exec_record['recu_calls']=0
 
     S_label_set=set(S.labels.values())
     nodes_to_erase=[]
@@ -238,6 +242,8 @@ def vf2pp(S,G):
 
 
 def recu_vf2pp(M,f,S,G):
+    exec_record['recu_calls']+=1
+
     if len(f)==len(S.nodes):
         return f
 
